@@ -1,0 +1,13 @@
+{
+    "title": "Downloader",
+
+    "tabs" : {
+        "home": "Home",
+        "about": "About",
+        "update": "Check for Updates"
+    },
+
+    "components": {
+        "welcome": "Welcome to Downloader!"
+    }
+}
