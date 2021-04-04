@@ -1,0 +1,5 @@
+*.nro
+*.nacp
+*.elf
+resoures/shaders/*
+build/**
