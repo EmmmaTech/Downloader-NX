@@ -3,3 +3,4 @@
 *.elf
 resoures/shaders/*
 build/**
+download/**
