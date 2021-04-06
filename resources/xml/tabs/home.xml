@@ -15,8 +15,47 @@
             width="auto"
             height="auto"
             text="@i18n/main/components/welcome"
-            marginBottom="10px"/>
+            marginBottom="20px"/>
 
+        <brls:Box
+            width="auto"
+            height="auto"
+            axis="row"
+            marginBottom="30px">
+
+            <brls:Button
+                id="url_button"
+                width="auto"
+                height="auto"
+                shrink="1.0"
+                style="primary"
+                text="@i18n/main/components/click_url"
+                marginRight="10px"/>
+
+            <brls:Button
+                id="fname_button"
+                width="auto"
+                height="auto"
+                shrink="1.0"
+                style="primary"
+                text="@i18n/main/components/click_fname"/>
+
+        </brls:Box>
+
+        <brls:Button
+            id="download_button"
+            width="auto"
+            height="auto"
+            shrink="1.0"
+            style="primary"
+            text="@i18n/main/components/download"
+            marginBottom="20px"/>
+
+        <brls:Label
+            id="download_progress"
+            width="auto"
+            height="auto"
+            text="@i18n/main/components/start_download"/>
 
     </brls:Box>
 

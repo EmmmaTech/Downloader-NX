@@ -1,9 +1,8 @@
-#include "download.hpp"
+#include <download.hpp>
+#include <borealis.hpp>
 #include <vector>
-#include <thread>
-#include <iostream>
-#include <sstream>
 #include <math.h>
+#include <iostream>
 
 namespace utilities
 {
@@ -18,16 +17,15 @@ namespace utilities
     int progress_func(void *ptr, double TotalToDownload, double NowDownloaded, double TotalToUpload, double NowUploaded)
     {
         if (TotalToDownload <= 0.0)
-        {
             return 0;
-        }
-
+        
         double fractionDownloaded = NowDownloaded / TotalToDownload;
-        int fullDownloaded = (int)round(fractionDownloaded * 100);
+        currentProgress = (int) round(fractionDownloaded * 100);
 
         std::cout << '\r';
-        std::cout << fullDownloaded << "% done";
+        std::cout << currentProgress << "% done!";
         fflush(stdout);
+
         return 0;
     }
 
@@ -60,14 +58,18 @@ namespace utilities
             curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_func);
 
             res = curl_easy_perform(curl);
+            if (res)
+            {
+                brls::Logger::error("Error while trying to download the file. curl_easy_perform failed.");
+            }
             curl_easy_cleanup(curl);
 
             fclose(fp);
         }
         else
-        {
-            std::cout << "Oops! Something went wrong!" << '\n';
-        }
+            brls::Logger::error("Error while trying to download the file. curl_easy_init failed.");
+        
+        std::cout << '\n';
     }
 
     void downloadFiles(std::unordered_map<std::string, std::string> &files)

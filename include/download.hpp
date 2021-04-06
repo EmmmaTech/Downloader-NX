@@ -36,4 +36,6 @@ namespace utilities
      * Downloads mulitiple files that are contained in an unordered_map.
      */
     void downloadFiles(std::unordered_map<std::string, std::string> &files);
+
+    static int currentProgress;
 }

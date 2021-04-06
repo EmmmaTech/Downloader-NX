@@ -8,6 +8,10 @@
     },
 
     "components": {
-        "welcome": "Welcome to Downloader!"
+        "welcome": "Welcome to Downloader!",
+        "click_url": "Click to enter URL(s)",
+        "click_fname": "Click to enter filename(s)",
+        "start_download": "Start a download to see the progress",
+        "download": "Download file(s)"
     }
 }
