@@ -18,7 +18,7 @@
 
 #pragma once
 
-//#include <json.hpp> Unused for now
+#include <json.hpp>
 #ifdef _DOWNLOADER_SWITCH
 #include <sys/select.h>
 #endif
@@ -54,6 +54,17 @@ namespace utilities
      * Downloads mulitiple files that are contained in an unordered_map.
      */
     void downloadFiles(std::unordered_map<std::string, std::string> &files);
+
+
+    /*
+     * Gets the latest tag from an api.github.com url.
+     */
+    std::string getLatestTag(const std::string url);
+
+    /*
+     * Gets the latest download link from an api.github.com url.
+     */
+    std::string getLatestDownload(const std::string url);
 
     static int currentProgress;
 }

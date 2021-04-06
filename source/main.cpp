@@ -26,12 +26,16 @@
 
 #include "main_activity.hpp"
 #include "home_tab.hpp"
-#include "download.hpp"
+#include "updater_tab.hpp"
 
 using namespace brls::literals;
 
 int main(int argc, char *argv[])
 {
+    #ifdef __SWITCH__
+    socketInitializeDefault();
+    #endif
+
     brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
 
     if (!brls::Application::init())
@@ -41,13 +45,19 @@ int main(int argc, char *argv[])
     }
 
     brls::Application::createWindow("main/title"_i18n);
-
     brls::Application::setGlobalQuit(true);
+
     brls::Application::registerXMLView("HomeTab", HomeTab::create);
+    brls::Application::registerXMLView("UpdaterTab", UpdaterTab::create);
+
     brls::Application::pushActivity(new MainActivity());
 
     while (brls::Application::mainLoop())
         ;
     
+    #ifdef __SWITCH__
+    socketExit();
+    #endif
+
     return EXIT_SUCCESS;
 }

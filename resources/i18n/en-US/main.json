@@ -13,5 +13,15 @@
         "click_fname": "Click to enter filename(s)",
         "start_download": "Start a download to see the progress",
         "download": "Download file(s)"
+    },
+
+    "about": {},
+
+    "update": {
+        "check_update": "Click to check for an update",
+        "update_found": "An update has been found! Would you like to update now?",
+        "update_not_found": "No updates have been found.",
+        "update_yes": "Yes",
+        "update_no": "No"
     }
 }

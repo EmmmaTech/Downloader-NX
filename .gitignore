@@ -4,3 +4,6 @@
 resoures/shaders/*
 build/**
 download/**
+.vscode/**
+!.vscode/c_cpp_properties.json
+downloader-forwarder/build/**

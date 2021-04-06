@@ -16,12 +16,26 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <constants.hpp>
-#include <string>
+#pragma once
 
-const char * add(const char* __str1, const char* __str2)
+#include <string>
+#include <borealis.hpp>
+
+struct UpdaterTab : public brls::Box
 {
-    static std::string str1(__str1);
-    str1 = str1 + __str2;
-    return str1.c_str();
-}
+    UpdaterTab();
+
+    static brls::View* create();
+
+    private:
+
+    bool onUpdateButtonPressed(brls::View* view);
+    bool onYesButtonPressed(brls::View* view);
+    bool onNoButtonPressed(brls::View* view);
+
+    bool updateApp(const std::string& url);
+
+    BRLS_BIND(brls::Label, info_label, "info");
+    BRLS_BIND(brls::Button, yes_button, "yes");
+    BRLS_BIND(brls::Button, no_button, "no");
+};

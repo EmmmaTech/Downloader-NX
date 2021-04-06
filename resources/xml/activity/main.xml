@@ -17,7 +17,7 @@
 
     <!-- Check for Updates page -->
     <brls:Tab label="@i18n/main/tabs/update">
-        <!--<UpdateTab/>-->
+        <UpdaterTab/>
     </brls:Tab>
 
     <brls:Separator/>

@@ -95,4 +95,48 @@ namespace utilities
         for (const auto &e : files)
             downloadFile(e.first.c_str(), e.second.c_str());
     }
+
+    std::string getLatestTag(const std::string url) 
+    {
+        const char* download_path =
+        #ifdef _DOWNLOADER_SWITCH
+        add(DOWNLOAD_PATH_SWITCH, "latest-tag.json");
+        #else
+        add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
+        #endif
+
+        downloadFile(url.c_str(), download_path);
+
+        nlohmann::json api_data;
+        std::ifstream api_file(download_path);
+
+        api_file >> api_data;
+        api_file.close();
+
+        return api_data["tag_name"].get<std::string>();
+    }
+
+    std::string getLatestDownload(const std::string url) 
+    {
+        const char* download_path =
+        #ifdef _DOWNLOADER_SWITCH
+        add(DOWNLOAD_PATH_SWITCH, "latest-tag.json");
+        #else
+        add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
+        #endif
+
+        downloadFile(url.c_str(), download_path);
+
+        nlohmann::json api_data;
+        std::ifstream api_file(download_path);
+
+        api_file >> api_data;
+        api_file.close();
+
+        std::string downloadURL;
+
+        for (auto& array : api_data["assets"])
+            downloadURL = array["browser_download_url"].get<std::string>();
+        return downloadURL;
+    }
 }
