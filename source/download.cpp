@@ -21,7 +21,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
-#include <unzipper.h>
+#include <zipper/unzipper.h>
 
 namespace utilities {
 #ifdef _DOWNLOADER_WINDOWS
@@ -108,14 +108,18 @@ void downloadFile(const char *url, const char *filename) {
   std::cout << '\n';
 
   if (is_zip_file(filename)) {
-    zipper::Unzipper file(filename);
-    std::string fname = extract_filename(filename);
+    try {
+      zipper::Unzipper file(filename);
+      std::string fname = extract_filename(filename);
 
-    #ifdef _DOWNLOADER_SWITCH
-    file.extract((DOWNLOAD_PATH_SWITCH + std::string("/") + fname));
-    #else
-    file.extract(correctSeperators((DOWNLOAD_PATH_GLFW + std::string("/") + fname).c_str()));
-    #endif
+      #ifdef _DOWNLOADER_SWITCH
+      file.extract((DOWNLOAD_PATH_SWITCH + std::string("/") + fname));
+      #else
+      file.extract(correctSeperators((DOWNLOAD_PATH_GLFW + std::string("/") + fname).c_str()));
+      #endif
+    } catch (const std::runtime_error& e) {
+      brls::Logger::error("Something went wrong when attemping to extract zip file.");
+    }
   }
 }
 

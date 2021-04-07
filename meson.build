@@ -1,10 +1,10 @@
 project('Downloader', ['c', 'cpp'],
     version: '1.0.0',
-    default_options: [ 'buildtype=release', 'strip=true', 'b_ndebug=if-release', 'cpp_std=c++1z', 'c_std=c17' ],
+    default_options: [ 'buildtype=release', 'strip=true', 'b_ndebug=if-release', 'cpp_std=c++1z', ],
 )
 
 curl = dependency('curl')
-zlib = dependency('zlib')
+zipper = dependency('zipper')
 
 subdir('lib/borealis/library')
 
@@ -18,7 +18,7 @@ lib_includes = include_directories(
 Downloader = executable(
     'Downloader',
     [ files, borealis_files ],
-    dependencies : [borealis_dependencies, curl, zlib],
+    dependencies : [borealis_dependencies, curl, zipper],
     install: true,
     include_directories: [ borealis_include, include_directories('include'), lib_includes],
     cpp_args: [ '-g', '-O2', '-DBRLS_RESOURCES="./resources/"', '-D_DOWNLOADER_PC', ] + borealis_cpp_args
