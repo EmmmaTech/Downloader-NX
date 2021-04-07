@@ -1,4 +1,0 @@
-[submodule "minizip"]
-	path = minizip
-	url = https://github.com/Lecrapouille/minizip.git
-	branch = master
