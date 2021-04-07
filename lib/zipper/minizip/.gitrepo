@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/Lecrapouille/minizip.git
+	branch = master
+	commit = 7619140097aaba8bd49659cb9c4878c4b1dcac30
+	parent = c030d5ca6817a496f5e86fcd788e26f53a4334f6
+	method = merge
+	cmdver = 0.4.3
