@@ -21,7 +21,11 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#ifndef _DOWNLOADER_SWITCH
 #include <zipper/unzipper.h>
+#else
+#include <unzipper.h>
+#endif
 
 namespace utilities {
 #ifdef _DOWNLOADER_WINDOWS

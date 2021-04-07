@@ -46,7 +46,7 @@ BOREALIS_PATH := lib/borealis
 
 TARGET		:=	Downloader
 BUILD		:=	build.nx
-SOURCES		:=	source lib/zipper/source
+SOURCES		:=	source lib/switch-zipper/source
 DATA		:=	data
 INCLUDES	:=	include $(BOREALIS_PATH)/library/include/borealis/extern/nlohmann lib/switch-zipper/include
 
