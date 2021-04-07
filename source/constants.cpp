@@ -17,21 +17,19 @@
 */
 
 #include <constants.hpp>
-#include <string>
-#include <string.h>
 #include <filesystem>
+#include <string.h>
+#include <string>
 
-const char * add(const char* __str1, const char* __str2)
-{
-    static std::string str1(__str1);
-    str1 = str1 + __str2;
-    return str1.c_str();
+const char *add(const char *__str1, const char *__str2) {
+  static std::string str1(__str1);
+  str1 = str1 + __str2;
+  return str1.c_str();
 }
 
-const char *correctSeperators(const char *__str)
-{
-    static std::filesystem::path p{ __str };
-    p.make_preferred();
-    const char *output = p.c_str();
-    return output;
+const char *correctSeperators(const char *__str) {
+  static std::filesystem::path p{__str};
+  p.make_preferred();
+  const char *output = p.c_str();
+  return output;
 }

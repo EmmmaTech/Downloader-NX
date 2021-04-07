@@ -21,81 +21,76 @@
 #endif
 
 #include <borealis.hpp>
-#include <string>
 #include <filesystem>
+#include <string>
 
 #include "constants.hpp"
-#include "main_activity.hpp"
 #include "home_tab.hpp"
+#include "main_activity.hpp"
 #include "updater_tab.hpp"
 
 using namespace brls::literals;
 
-void initFolders()
-{
-    const char *config_path =
-    #ifdef _DOWNLOADER_SWITCH
-    CONFIG_PATH_SWITCH;
-    #else
-    CONFIG_PATH_GLFW;
-    #endif
+void initFolders() {
+  const char *config_path =
+#ifdef _DOWNLOADER_SWITCH
+      CONFIG_PATH_SWITCH;
+#else
+      CONFIG_PATH_GLFW;
+#endif
 
-    const char *download_path =
-    #ifdef _DOWNLOADER_SWITCH
-    DOWNLOAD_PATH_SWITCH;
-    #else
-    DOWNLOAD_PATH_GLFW;
-    #endif
+  const char *download_path =
+#ifdef _DOWNLOADER_SWITCH
+      DOWNLOAD_PATH_SWITCH;
+#else
+      DOWNLOAD_PATH_GLFW;
+#endif
 
-    if (!std::filesystem::exists(config_path))
-        std::filesystem::create_directories(config_path);
+  if (!std::filesystem::exists(config_path))
+    std::filesystem::create_directories(config_path);
 
-    else if (!std::filesystem::is_directory(config_path))
-    {
-        std::filesystem::remove(config_path);
-        std::filesystem::create_directories(config_path);
-    }
+  else if (!std::filesystem::is_directory(config_path)) {
+    std::filesystem::remove(config_path);
+    std::filesystem::create_directories(config_path);
+  }
 
-    if (!std::filesystem::exists(download_path))
-        std::filesystem::create_directories(download_path);
+  if (!std::filesystem::exists(download_path))
+    std::filesystem::create_directories(download_path);
 
-    else if (!std::filesystem::is_directory(download_path))
-    {
-        std::filesystem::remove(download_path);
-        std::filesystem::create_directories(download_path);
-    }
+  else if (!std::filesystem::is_directory(download_path)) {
+    std::filesystem::remove(download_path);
+    std::filesystem::create_directories(download_path);
+  }
 }
 
-int main(int argc, char *argv[])
-{
-    #ifdef __SWITCH__
-    socketInitializeDefault();
-    #endif
+int main(int argc, char *argv[]) {
+#ifdef __SWITCH__
+  socketInitializeDefault();
+#endif
 
-    initFolders();
+  initFolders();
 
-    brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
+  brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
 
-    if (!brls::Application::init())
-    {
-        brls::Logger::error("Unable to init the Downloader app");
-        return EXIT_FAILURE;
-    }
+  if (!brls::Application::init()) {
+    brls::Logger::error("Unable to init the Downloader app");
+    return EXIT_FAILURE;
+  }
 
-    brls::Application::createWindow("main/title"_i18n);
-    brls::Application::setGlobalQuit(true);
+  brls::Application::createWindow("main/title"_i18n);
+  brls::Application::setGlobalQuit(true);
 
-    brls::Application::registerXMLView("HomeTab", HomeTab::create);
-    brls::Application::registerXMLView("UpdaterTab", UpdaterTab::create);
+  brls::Application::registerXMLView("HomeTab", HomeTab::create);
+  brls::Application::registerXMLView("UpdaterTab", UpdaterTab::create);
 
-    brls::Application::pushActivity(new MainActivity());
+  brls::Application::pushActivity(new MainActivity());
 
-    while (brls::Application::mainLoop())
-        ;
-    
-    #ifdef __SWITCH__
-    socketExit();
-    #endif
+  while (brls::Application::mainLoop())
+    ;
 
-    return EXIT_SUCCESS;
+#ifdef __SWITCH__
+  socketExit();
+#endif
+
+  return EXIT_SUCCESS;
 }

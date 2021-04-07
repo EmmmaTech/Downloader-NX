@@ -18,24 +18,22 @@
 
 #pragma once
 
-#include <string>
 #include <borealis.hpp>
+#include <string>
 
-struct UpdaterTab : public brls::Box
-{
-    UpdaterTab();
+struct UpdaterTab : public brls::Box {
+  UpdaterTab();
 
-    static brls::View* create();
+  static brls::View *create();
 
-    private:
+private:
+  bool onUpdateButtonPressed(brls::View *view);
+  bool onYesButtonPressed(brls::View *view);
+  bool onNoButtonPressed(brls::View *view);
 
-    bool onUpdateButtonPressed(brls::View* view);
-    bool onYesButtonPressed(brls::View* view);
-    bool onNoButtonPressed(brls::View* view);
+  bool updateApp(const std::string &url);
 
-    bool updateApp(const std::string& url);
-
-    BRLS_BIND(brls::Label, info_label, "info");
-    BRLS_BIND(brls::Button, yes_button, "yes");
-    BRLS_BIND(brls::Button, no_button, "no");
+  BRLS_BIND(brls::Label, info_label, "info");
+  BRLS_BIND(brls::Button, yes_button, "yes");
+  BRLS_BIND(brls::Button, no_button, "no");
 };
