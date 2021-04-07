@@ -77,9 +77,8 @@ namespace utilities
 
             res = curl_easy_perform(curl);
             if (res)
-            {
                 brls::Logger::error("Error while trying to download the file. curl_easy_perform failed.");
-            }
+            
             curl_easy_cleanup(curl);
 
             fclose(fp);
@@ -105,6 +104,8 @@ namespace utilities
         add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
         #endif
 
+        std::cout << download_path << '\n';
+
         downloadFile(url.c_str(), download_path);
 
         nlohmann::json api_data;
@@ -113,7 +114,11 @@ namespace utilities
         api_file >> api_data;
         api_file.close();
 
-        return api_data["tag_name"].get<std::string>();
+        try {
+            return api_data["tag_name"].get<std::string>();
+        } catch (...) {}
+
+        return "";
     }
 
     std::string getLatestDownload(const std::string url) 
@@ -125,6 +130,8 @@ namespace utilities
         add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
         #endif
 
+        std::cout << download_path << '\n';
+
         downloadFile(url.c_str(), download_path);
 
         nlohmann::json api_data;
@@ -135,8 +142,11 @@ namespace utilities
 
         std::string downloadURL;
 
-        for (auto& array : api_data["assets"])
-            downloadURL = array["browser_download_url"].get<std::string>();
+        try {
+            for (auto& array : api_data["assets"])
+                downloadURL = array["browser_download_url"].get<std::string>();
+        } catch (...) {}
+        
         return downloadURL;
     }
 }

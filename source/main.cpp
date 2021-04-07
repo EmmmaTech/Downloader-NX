@@ -22,19 +22,57 @@
 
 #include <borealis.hpp>
 #include <string>
-#include <unordered_map>
+#include <filesystem>
 
+#include "constants.hpp"
 #include "main_activity.hpp"
 #include "home_tab.hpp"
 #include "updater_tab.hpp"
 
 using namespace brls::literals;
 
+void initFolders()
+{
+    const char *config_path =
+    #ifdef _DOWNLOADER_SWITCH
+    CONFIG_PATH_SWITCH;
+    #else
+    CONFIG_PATH_GLFW;
+    #endif
+
+    const char *download_path =
+    #ifdef _DOWNLOADER_SWITCH
+    DOWNLOAD_PATH_SWITCH;
+    #else
+    DOWNLOAD_PATH_GLFW;
+    #endif
+
+    if (!std::filesystem::exists(config_path))
+        std::filesystem::create_directories(config_path);
+
+    else if (!std::filesystem::is_directory(config_path))
+    {
+        std::filesystem::remove(config_path);
+        std::filesystem::create_directories(config_path);
+    }
+
+    if (!std::filesystem::exists(download_path))
+        std::filesystem::create_directories(download_path);
+
+    else if (!std::filesystem::is_directory(download_path))
+    {
+        std::filesystem::remove(download_path);
+        std::filesystem::create_directories(download_path);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     #ifdef __SWITCH__
     socketInitializeDefault();
     #endif
+
+    initFolders();
 
     brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
 

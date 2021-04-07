@@ -20,6 +20,10 @@
 #include <constants.hpp>
 #include <download.hpp>
 
+#ifdef _DOWNLOADER_SWITCH
+#include <switch.h>
+#endif
+
 using namespace brls::literals;
 
 UpdaterTab::UpdaterTab()
@@ -58,6 +62,7 @@ bool UpdaterTab::onUpdateButtonPressed(brls::View* view)
 bool UpdaterTab::onYesButtonPressed(brls::View* view)
 {
     std::string downloadURL = utilities::getLatestDownload(API_URL);
+    brls::Logger::debug("Download URL: {}", downloadURL);
     bool res = this->updateApp(downloadURL);
     if (res)
         return true;
@@ -70,12 +75,13 @@ bool UpdaterTab::updateApp(const std::string& url)
     #ifdef _DOWNLOADER_SWITCH
     utilities::downloadFile(url.c_str(), UPDATE_PATH_SWITCH);
     // TODO: Run the forwarder to update the app
+    envSetNextLoad(FORWARDER_PATH_SWITCH, ("\"" + std::string(FORWARDER_PATH_SWITCH) + "\"").c_str());
     #else
     utilities::downloadFile(url.c_str(), UPDATE_PATH_GLFW);
     // TODO: Extract and copy all the files to the project root
     #endif
 
-    return true;
+    return false;
 }
 
 bool UpdaterTab::onNoButtonPressed(brls::View* view)

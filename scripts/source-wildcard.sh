@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#
 # Downloader, a cross-platform download manager for Nintendo Switch and PC
 # Copyright (C) 2021 EmreTech
 #
@@ -15,7 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+#
 
 for i in source/*.cpp; do
     echo $i

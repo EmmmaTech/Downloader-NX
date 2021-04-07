@@ -31,19 +31,21 @@
  */
 const char *add(const char *__str1, const char *__str2);
 
+const char *correctSeperators(const char *__str);
+
 #define CONFIG_PATH_SWITCH "/config/Downloader/"
-#define CONFIG_PATH_GLFW "./config/Downloader/"
+#define CONFIG_PATH_GLFW correctSeperators("./config/Downloader/")
 
 #define PATH_SWITCH "/switch/Downloader/"
 #define FULL_PATH_SWITCH add(PATH_SWITCH, "Downloader.nro")
 
-#define UPDATE_PATH_SWITCH add(CONFIG_PATH_SWITCH, "Downloader.nro")
-#define UPDATE_PATH_GLFW add(CONFIG_PATH_GLFW, "Downloader.zip")
+#define UPDATE_PATH_SWITCH add(CONFIG_PATH_SWITCH, "Downloader-Switch.zip")
+#define UPDATE_PATH_GLFW add(CONFIG_PATH_GLFW, "Downloader-PC.zip")
 
 #define FORWARDER_PATH_SWITCH add(CONFIG_PATH_SWITCH, "download-forwarder.nro")
 
 #define DOWNLOAD_PATH_SWITCH add(CONFIG_PATH_SWITCH, "download/")
-#define DOWNLOAD_PATH_GLFW "./download/"
+#define DOWNLOAD_PATH_GLFW correctSeperators("./download/")
 
 #define API_URL "https://api.github.com/repos/EmreTech/Downloader/releases/latest"
 #define API_AGENT "EmreTech"
