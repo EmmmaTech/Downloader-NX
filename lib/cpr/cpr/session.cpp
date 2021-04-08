@@ -9,7 +9,7 @@
 #include <curl/curl.h>
 
 #include "cpr/cprtypes.h"
-#include "cpr/util.h"
+#include "cpr/utilities.h"
 
 
 namespace cpr {

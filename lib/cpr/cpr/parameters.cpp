@@ -3,7 +3,7 @@
 #include <initializer_list>
 #include <string>
 
-#include "cpr/util.h"
+#include "cpr/utilities.h"
 
 namespace cpr {
 Parameters::Parameters(const std::initializer_list<Parameter>& parameters) : CurlContainer<Parameter>(parameters) {}
