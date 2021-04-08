@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**"
             ],
-            "defines": [],
+            "defines": [
+                "_DOWNLOADER_PC"
+            ],
             "macFrameworkPath": [],
             "compilerPath": "/usr/local/bin/gcc-10",
             "cStandard": "c11",

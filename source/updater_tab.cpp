@@ -66,7 +66,6 @@ bool UpdaterTab::onYesButtonPressed(brls::View *view) {
 bool UpdaterTab::updateApp(const std::string &url) {
 #ifdef _DOWNLOADER_SWITCH
   utilities::downloadFile(url.c_str(), UPDATE_PATH_SWITCH);
-  // TODO: Run the forwarder to update the app
   envSetNextLoad(FORWARDER_PATH_SWITCH,
                  ("\"" + std::string(FORWARDER_PATH_SWITCH) + "\"").c_str());
 #else

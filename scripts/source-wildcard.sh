@@ -21,3 +21,7 @@
 for i in source/*.cpp; do
     echo $i
 done
+
+for i in lib/cpr/cpr/*.cpp; do
+    echo $i
+done

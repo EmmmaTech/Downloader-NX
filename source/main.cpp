@@ -46,20 +46,26 @@ void initFolders() {
       DOWNLOAD_PATH_GLFW;
 #endif
 
-  if (!std::filesystem::exists(config_path))
-    std::filesystem::create_directories(config_path);
+  brls::Logger::debug("Config path: {} Download path: {}", config_path, download_path);
 
-  else if (!std::filesystem::is_directory(config_path)) {
-    std::filesystem::remove(config_path);
-    std::filesystem::create_directories(config_path);
-  }
+  try {
+    if (!std::filesystem::exists(config_path))
+      std::filesystem::create_directories(config_path);
 
-  if (!std::filesystem::exists(download_path))
-    std::filesystem::create_directories(download_path);
+    else if (!std::filesystem::is_directory(config_path)) {
+      std::filesystem::remove(config_path);
+      std::filesystem::create_directories(config_path);
+    }
 
-  else if (!std::filesystem::is_directory(download_path)) {
-    std::filesystem::remove(download_path);
-    std::filesystem::create_directories(download_path);
+    if (!std::filesystem::exists(download_path))
+      std::filesystem::create_directories(download_path);
+
+    else if (!std::filesystem::is_directory(download_path)) {
+      std::filesystem::remove(download_path);
+      std::filesystem::create_directories(download_path);
+    }
+  } catch (std::filesystem::filesystem_error& e) {
+    brls::Logger::error("Something went wrong during the initFolders check. Error: {}", e.what());
   }
 }
 
