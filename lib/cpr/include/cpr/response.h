@@ -13,7 +13,7 @@
 #include "cpr/cprtypes.h"
 #include "cpr/error.h"
 #include "cpr/ssl_options.h"
-#include "cpr/util.h"
+#include "cpr/utilities.h"
 
 namespace cpr {
 
