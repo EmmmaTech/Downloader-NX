@@ -19,9 +19,6 @@
 #pragma once
 
 #include <json.hpp>
-#ifdef _DOWNLOADER_SWITCH
-#include <sys/select.h>
-#endif
 #include <cpr/cpr.h>
 
 #include <filesystem>
