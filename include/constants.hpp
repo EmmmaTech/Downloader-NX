@@ -44,8 +44,7 @@ const char *correctSeperators(const char *__str);
 #define UPDATE_PATH_SWITCH add(CONFIG_PATH_SWITCH, "Downloader-Switch.zip")
 #define UPDATE_PATH_GLFW add(CONFIG_PATH_GLFW, "Downloader-PC.zip")
 
-#define FORWARDER_PATH_SWITCH                                                  \
-  add(CONFIG_PATH_SWITCH, "downloader-forwarder.nro")
+#define FORWARDER_PATH_SWITCH add(CONFIG_PATH_SWITCH, "downloader-forwarder.nro")
 
 #define DOWNLOAD_PATH_SWITCH add(CONFIG_PATH_SWITCH, "download/")
 #define DOWNLOAD_PATH_GLFW correctSeperators("./download/")
