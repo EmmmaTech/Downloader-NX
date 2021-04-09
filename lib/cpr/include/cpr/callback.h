@@ -44,13 +44,13 @@ class ProgressCallback {
   public:
     ProgressCallback() = default;
     // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
-    ProgressCallback(std::function<bool(double downloadTotal, double downloadNow,
-                                        double uploadTotal, double uploadNow)>
+    ProgressCallback(std::function<bool(size_t downloadTotal, size_t downloadNow,
+                                        size_t uploadTotal, size_t uploadNow)>
                              callback)
             : callback(std::move(callback)) {}
 
-    std::function<bool(double downloadTotal, double downloadNow, double uploadTotal,
-                       double uploadNow)>
+    std::function<bool(size_t downloadTotal, size_t downloadNow, size_t uploadTotal,
+                       size_t uploadNow)>
             callback;
 };
 

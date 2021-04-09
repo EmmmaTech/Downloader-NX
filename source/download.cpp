@@ -57,17 +57,6 @@ bool processProgress(size_t TotalToDownload, size_t NowDownloaded,
 
   //TotalToDownload /= 1000;
   //NowDownloaded /= 1000;
-
-  double fractiondownloaded = NowDownloaded / TotalToDownload;
-  std::cout << fractiondownloaded << '\n';
-  fractiondownloaded = TotalToDownload / NowDownloaded;
-  std::cout << fractiondownloaded << '\n';
-
-  //std::cout << '\r';  
-  //std::cout << fractiondownloaded << "% done";
-  //fflush(stdout);
-
-  //std::cout << "Downloaded " << NowDownloaded << "/" << TotalToDownload << " KBs." << std::endl;
   return true;
 }
 
