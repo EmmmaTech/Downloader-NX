@@ -18,18 +18,24 @@
 
 #include <constants.hpp>
 #include <filesystem>
+#include <iostream>
 #include <string.h>
 #include <string>
 
 const char *add(const char *__str1, const char *__str2) {
-  static std::string str1(__str1);
+  std::string str1 = __str1;
   str1 = str1 + __str2;
-  return str1.c_str();
+  char *output = new char[sizeof(str1.c_str()) + 1];
+  strcpy(output, str1.c_str());
+  return output;
 }
 
 const char *correctSeperators(const char *__str) {
-  static std::filesystem::path p{__str};
+  std::filesystem::path p{__str};
   p.make_preferred();
-  const char *output = p.c_str();
+
+  std::string tmp_output = p.string();
+  char *output = new char[sizeof(tmp_output.c_str()) + 1];
+  strcpy(output, tmp_output.c_str());
   return output;
 }

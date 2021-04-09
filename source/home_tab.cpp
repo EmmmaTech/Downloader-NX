@@ -55,32 +55,19 @@ bool HomeTab::onFNameButtonPressed(brls::View *view) {
 }
 
 bool HomeTab::onDownloadButtonPressed(brls::View *view) {
+  const char *download_path =
+#ifdef _DOWNLOADER_SWITCH
+      DOWNLOAD_PATH_SWITCH;
+#else
+      DOWNLOAD_PATH_GLFW;
+#endif
+
   // Function cannot run if current_url and current_fname are empty
   if (this->current_url.empty() || this->current_fname.empty()) {
     brls::Logger::warning("Current URL and/or current filename are empty. "
                           "Please use their buttons to set them.");
     return true;
   }
-
-#ifdef _DOWNLOADER_PC
-  if (!std::filesystem::exists(DOWNLOAD_PATH_GLFW))
-    std::filesystem::create_directories(DOWNLOAD_PATH_GLFW);
-
-  else if (!std::filesystem::is_directory(DOWNLOAD_PATH_GLFW)) {
-    brls::Logger::error("Download path for PC (GLFW) already exists, but it's "
-                        "not a directory.");
-    return true;
-  }
-#else
-  if (!std::filesystem::exists(DOWNLOAD_PATH_SWITCH))
-    std::filesystem::create_directories(DOWNLOAD_PATH_SWITCH);
-
-  else if (!std::filesystem::is_directory(DOWNLOAD_PATH_SWITCH)) {
-    brls::Logger::error(
-        "Download path for Switch already exists, but it's not a directory.");
-    return true;
-  }
-#endif
 
   // Initalize some variables for later use
   std::istringstream iss_1(this->current_url);
@@ -89,21 +76,14 @@ bool HomeTab::onDownloadButtonPressed(brls::View *view) {
 
   // Add elements to the requestedDownloads map
   while (iss_1 >> url && iss_2 >> fname) {
-#ifdef _DOWNLOADER_PC
-    fname = DOWNLOAD_PATH_GLFW + fname;
-#else
-    fname = DOWNLOAD_PATH_SWITCH + fname;
-#endif
+    fname = download_path + fname;
     this->requestedDownloads[url] = fname;
   }
 
   // Start download(s) on a different thread
   std::thread downloadThread = std::thread(&utilities::downloadFiles,
                                            std::ref(this->requestedDownloads));
-  this->progressLabel->setText(
-      std::to_string(utilities::currentProgress) +
-      "% done downloading..."); // TODO: Get the progress meter to work
-                                // properly.
+
   if (downloadThread.joinable())
     downloadThread.join();
 

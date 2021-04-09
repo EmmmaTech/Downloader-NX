@@ -16,13 +16,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifdef __SWITCH__
+#ifdef _DOWNLOADER_SWITCH
 #include <switch.h>
 #endif
 
 #include <borealis.hpp>
 #include <filesystem>
-#include <string>
 
 #include "constants.hpp"
 #include "home_tab.hpp"
@@ -46,31 +45,34 @@ void initFolders() {
       DOWNLOAD_PATH_GLFW;
 #endif
 
-  if (!std::filesystem::exists(config_path))
-    std::filesystem::create_directories(config_path);
+  try {
+    if (!std::filesystem::exists(config_path))
+      std::filesystem::create_directories(config_path);
 
-  else if (!std::filesystem::is_directory(config_path)) {
-    std::filesystem::remove(config_path);
-    std::filesystem::create_directories(config_path);
-  }
+    else if (!std::filesystem::is_directory(config_path)) {
+      std::filesystem::remove(config_path);
+      std::filesystem::create_directories(config_path);
+    }
 
-  if (!std::filesystem::exists(download_path))
-    std::filesystem::create_directories(download_path);
+    if (!std::filesystem::exists(download_path))
+      std::filesystem::create_directories(download_path);
 
-  else if (!std::filesystem::is_directory(download_path)) {
-    std::filesystem::remove(download_path);
-    std::filesystem::create_directories(download_path);
+    else if (!std::filesystem::is_directory(download_path)) {
+      std::filesystem::remove(download_path);
+      std::filesystem::create_directories(download_path);
+    }
+  } catch (std::filesystem::filesystem_error &e) {
+    brls::Logger::error("{}", e.what());
   }
 }
 
 int main(int argc, char *argv[]) {
-#ifdef __SWITCH__
+#ifdef _DOWNLOADER_SWITCH
   socketInitializeDefault();
 #endif
-
   initFolders();
 
-  brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
+  // brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
 
   if (!brls::Application::init()) {
     brls::Logger::error("Unable to init the Downloader app");
@@ -88,7 +90,7 @@ int main(int argc, char *argv[]) {
   while (brls::Application::mainLoop())
     ;
 
-#ifdef __SWITCH__
+#ifdef _DOWNLOADER_SWITCH
   socketExit();
 #endif
 

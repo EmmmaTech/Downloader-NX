@@ -13,6 +13,7 @@ files = c.stdout().strip().split('\n')
 
 lib_includes = include_directories(
     'lib/borealis/library/include/borealis/extern/nlohmann',
+    'lib/cpr/include',
 )
 
 Downloader = executable(
