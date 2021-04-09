@@ -53,5 +53,4 @@ std::string getLatestTag(const std::string url);
  */
 std::string getLatestDownload(const std::string url);
 
-static int currentProgress;
 } // namespace utilities

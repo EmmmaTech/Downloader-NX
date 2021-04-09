@@ -16,13 +16,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifdef __SWITCH__
+#ifdef _DOWNLOADER_SWITCH
 #include <switch.h>
 #endif
 
 #include <borealis.hpp>
 #include <filesystem>
-#include <string>
 
 #include "constants.hpp"
 #include "home_tab.hpp"
@@ -46,8 +45,6 @@ void initFolders() {
       DOWNLOAD_PATH_GLFW;
 #endif
 
-  brls::Logger::debug("Config path: {} Download path: {}", config_path, download_path);
-
   try {
     if (!std::filesystem::exists(config_path))
       std::filesystem::create_directories(config_path);
@@ -70,13 +67,12 @@ void initFolders() {
 }
 
 int main(int argc, char *argv[]) {
-#ifdef __SWITCH__
+#ifdef _DOWNLOADER_SWITCH
   socketInitializeDefault();
 #endif
-
   initFolders();
 
-  brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
+  //brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
 
   if (!brls::Application::init()) {
     brls::Logger::error("Unable to init the Downloader app");
@@ -94,7 +90,7 @@ int main(int argc, char *argv[]) {
   while (brls::Application::mainLoop())
     ;
 
-#ifdef __SWITCH__
+#ifdef _DOWNLOADER_SWITCH
   socketExit();
 #endif
 

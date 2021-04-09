@@ -50,10 +50,29 @@ std::string extract_filename(const std::string& str) {
   return p.filename().string();
 }
 
-void downloadFile(const char *url, const char *filename) {
-  std::cout << filename << '\n';
+bool processProgress(size_t TotalToDownload, size_t NowDownloaded, 
+                    size_t TotalToUpload, size_t NowUploaded) {
+  if (TotalToDownload <= 0)
+    return true;
 
-  cpr::Response r = cpr::Get(cpr::Url{url});
+  //TotalToDownload /= 1000;
+  //NowDownloaded /= 1000;
+
+  double fractiondownloaded = NowDownloaded / TotalToDownload;
+  std::cout << fractiondownloaded << '\n';
+  fractiondownloaded = TotalToDownload / NowDownloaded;
+  std::cout << fractiondownloaded << '\n';
+
+  //std::cout << '\r';  
+  //std::cout << fractiondownloaded << "% done";
+  //fflush(stdout);
+
+  //std::cout << "Downloaded " << NowDownloaded << "/" << TotalToDownload << " KBs." << std::endl;
+  return true;
+}
+
+void downloadFile(const char *url, const char *filename) {
+  cpr::Response r = cpr::Get(cpr::Url{url}, cpr::ProgressCallback(processProgress));
 
   if (r.error.code != cpr::ErrorCode::OK)
   {
@@ -66,7 +85,7 @@ void downloadFile(const char *url, const char *filename) {
   std::fstream file;
   file.open(filename, std::ios::in|std::ios::out|std::ios::trunc);
 
-  if (file.good())
+  if (file.good() || !file.bad() || file.fail())
     file << r.text;
 
   else
@@ -76,8 +95,6 @@ void downloadFile(const char *url, const char *filename) {
     error += ".";
     throw std::runtime_error(error.c_str());
   }
-
-  file.close();
 }
 
 void downloadFiles(std::unordered_map<std::string, std::string> &files) {
