@@ -61,8 +61,8 @@ void initFolders() {
       std::filesystem::remove(download_path);
       std::filesystem::create_directories(download_path);
     }
-  } catch (std::filesystem::filesystem_error& e) {
-    brls::Logger::error("Something went wrong during the initFolders check. Error: {}", e.what());
+  } catch (std::filesystem::filesystem_error &e) {
+    brls::Logger::error("{}", e.what());
   }
 }
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 #endif
   initFolders();
 
-  //brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
+  // brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
 
   if (!brls::Application::init()) {
     brls::Logger::error("Unable to init the Downloader app");

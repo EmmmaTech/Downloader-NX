@@ -19,8 +19,8 @@
 #include <borealis.hpp>
 #include <download.hpp>
 #include <iostream>
-#include <vector>
 #include <math.h>
+#include <vector>
 #ifndef _DOWNLOADER_SWITCH
 #include <zipper/unzipper.h>
 #else
@@ -29,7 +29,7 @@
 
 namespace utilities {
 
-bool is_zip_file(const std::string& str) {
+bool is_zip_file(const std::string &str) {
   std::filesystem::path p(str);
 
   if (!p.has_extension())
@@ -41,45 +41,46 @@ bool is_zip_file(const std::string& str) {
   return false;
 }
 
-std::string extract_filename(const std::string& str) {
+std::string extract_filename(const std::string &str) {
   std::filesystem::path p(str);
 
   if (!p.has_filename())
     return "";
-  
+
   return p.filename().string();
 }
 
-bool processProgress(size_t TotalToDownload, size_t NowDownloaded, 
-                    size_t TotalToUpload, size_t NowUploaded) {
+bool processProgress(size_t TotalToDownload, size_t NowDownloaded,
+                     size_t TotalToUpload, size_t NowUploaded) {
   if (TotalToDownload <= 0)
     return true;
 
-  //TotalToDownload /= 1000;
-  //NowDownloaded /= 1000;
+  // TotalToDownload /= 1000;
+  // NowDownloaded /= 1000;
   return true;
 }
 
 void downloadFile(const char *url, const char *filename) {
-  cpr::Response r = cpr::Get(cpr::Url{url}, cpr::ProgressCallback(processProgress));
+  cpr::Response r =
+      cpr::Get(cpr::Url{url}, cpr::ProgressCallback(processProgress));
 
-  if (r.error.code != cpr::ErrorCode::OK)
-  {
-    std::string error = "Something went wrong when attemping to download file from ";
+  if (r.error.code != cpr::ErrorCode::OK) {
+    std::string error =
+        "Something went wrong when attemping to download file from ";
     error += url;
     error += ".";
     throw std::runtime_error(error.c_str());
   }
 
   std::fstream file;
-  file.open(filename, std::ios::in|std::ios::out|std::ios::trunc);
+  file.open(filename, std::ios::in | std::ios::out | std::ios::trunc);
 
   if (file.good() || !file.bad() || file.fail())
     file << r.text;
 
-  else
-  {
-    std::string error = "Something went wrong when attemping to save downloaded file from ";
+  else {
+    std::string error =
+        "Something went wrong when attemping to save downloaded file from ";
     error += url;
     error += ".";
     throw std::runtime_error(error.c_str());
@@ -90,7 +91,7 @@ void downloadFiles(std::unordered_map<std::string, std::string> &files) {
   for (const auto &e : files) {
     try {
       downloadFile(e.first.c_str(), e.second.c_str());
-    } catch (std::runtime_error& e) {
+    } catch (std::runtime_error &e) {
       brls::Logger::error("Error: {}", e.what());
     }
   }
@@ -113,7 +114,8 @@ std::string getLatestTag(const std::string url) {
 
   try {
     return api_data["tag_name"].get<std::string>();
-  } catch (...) { }
+  } catch (...) {
+  }
 
   return "";
 }
@@ -139,7 +141,8 @@ std::string getLatestDownload(const std::string url) {
   try {
     for (auto &array : api_data["assets"])
       downloadURL = array["browser_download_url"].get<std::string>();
-  } catch (...) { }
+  } catch (...) {
+  }
 
   return downloadURL;
 }

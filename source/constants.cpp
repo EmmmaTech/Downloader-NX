@@ -18,9 +18,9 @@
 
 #include <constants.hpp>
 #include <filesystem>
+#include <iostream>
 #include <string.h>
 #include <string>
-#include <iostream>
 
 const char *add(const char *__str1, const char *__str2) {
   std::string str1 = __str1;
@@ -33,7 +33,7 @@ const char *add(const char *__str1, const char *__str2) {
 const char *correctSeperators(const char *__str) {
   std::filesystem::path p{__str};
   p.make_preferred();
-  
+
   std::string tmp_output = p.string();
   char *output = new char[sizeof(tmp_output.c_str()) + 1];
   strcpy(output, tmp_output.c_str());

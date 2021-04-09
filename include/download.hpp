@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include <json.hpp>
 #include <cpr/cpr.h>
+#include <json.hpp>
 
 #include <filesystem>
 #include <fstream>

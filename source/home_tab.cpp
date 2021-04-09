@@ -56,11 +56,11 @@ bool HomeTab::onFNameButtonPressed(brls::View *view) {
 
 bool HomeTab::onDownloadButtonPressed(brls::View *view) {
   const char *download_path =
-  #ifdef _DOWNLOADER_SWITCH
-  DOWNLOAD_PATH_SWITCH;
-  #else
-  DOWNLOAD_PATH_GLFW;
-  #endif
+#ifdef _DOWNLOADER_SWITCH
+      DOWNLOAD_PATH_SWITCH;
+#else
+      DOWNLOAD_PATH_GLFW;
+#endif
 
   // Function cannot run if current_url and current_fname are empty
   if (this->current_url.empty() || this->current_fname.empty()) {
@@ -83,7 +83,7 @@ bool HomeTab::onDownloadButtonPressed(brls::View *view) {
   // Start download(s) on a different thread
   std::thread downloadThread = std::thread(&utilities::downloadFiles,
                                            std::ref(this->requestedDownloads));
-  
+
   if (downloadThread.joinable())
     downloadThread.join();
 
