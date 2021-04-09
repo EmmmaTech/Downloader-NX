@@ -50,6 +50,24 @@ include(cmake/gcc_analyze.cmake)
 
 # SSL
 if(CPR_ENABLE_SSL)
+    # On macOS, search Homebrew for keg-only versions of OpenSSL
+    # equivalent of # -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl/ -DOPENSSL_CRYPTO_LIBRARY=/usr/local/opt/openssl/lib/
+    if (CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
+    execute_process(
+        COMMAND brew --prefix OpenSSL 
+        RESULT_VARIABLE BREW_OPENSSL
+        OUTPUT_VARIABLE BREW_OPENSSL_PREFIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if (BREW_OPENSSL EQUAL 0 AND EXISTS "${BREW_OPENSSL_PREFIX}")
+        message(STATUS "Found OpenSSL keg installed by Homebrew at ${BREW_OPENSSL_PREFIX}")
+        set(OPENSSL_ROOT_DIR "${BREW_OPENSSL_PREFIX}/")
+        set(OPENSSL_INCLUDE_DIR "${BREW_OPENSSL_PREFIX}/include")
+        set(OPENSSL_LIBRARIES "${BREW_OPENSSL_PREFIX}/lib")
+        set(OPENSSL_CRYPTO_LIBRARY "${BREW_OPENSSL_PREFIX}/lib/libcrypto.dylib")
+    endif()
+    endif()
+
     if(CPR_FORCE_OPENSSL_BACKEND OR CPR_FORCE_WINSSL_BACKEND)
         message(STATUS "Disabled SSL backend auto detect since either CPR_FORCE_OPENSSL_BACKEND or CPR_FORCE_WINSSL_BACKEND is enabled.")
         set(DETECT_SSL_BACKEND OFF CACHE INTERNAL "" FORCE)

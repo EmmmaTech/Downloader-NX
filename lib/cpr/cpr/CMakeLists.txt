@@ -15,7 +15,7 @@ add_library(cpr
     session.cpp
     timeout.cpp
     unix_socket.cpp
-    util.cpp
+    utilities.cpp
     response.cpp
     )
 

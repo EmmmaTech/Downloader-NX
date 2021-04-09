@@ -29,7 +29,7 @@ target_sources(cpr PRIVATE
     cpr/ssl_options.h
     cpr/timeout.h
     cpr/unix_socket.h
-    cpr/util.h
+    cpr/utilities.h
     cpr/verbose.h
 )
 

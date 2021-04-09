@@ -3,7 +3,7 @@
 #include <string>
 
 #include <cpr/cprtypes.h>
-#include <cpr/util.h>
+#include <cpr/utilities.h>
 
 using namespace cpr;
 
