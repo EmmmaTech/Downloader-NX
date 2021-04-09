@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/EmreTech/cpr.git
 	branch = master
-	commit = 4946775b0a1e4013bdd5e63807cc4f0ad7e9cde4
-	parent = e0dc0a9551014499f7d262cbe0db5ecabe283be5
+	commit = cdac9fae78bb1721548be1ede1fd198be571cfac
+	parent = acff1885c1165915be6e0f13f5d376ca2627054e
 	method = merge
 	cmdver = 0.4.3
