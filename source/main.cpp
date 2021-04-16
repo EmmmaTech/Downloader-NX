@@ -72,8 +72,6 @@ int main(int argc, char *argv[]) {
 #endif
   initFolders();
 
-  // brls::Logger::setLogLevel(brls::LogLevel::DEBUG);
-
   if (!brls::Application::init()) {
     brls::Logger::error("Unable to init the Downloader app");
     return EXIT_FAILURE;
@@ -87,7 +85,7 @@ int main(int argc, char *argv[]) {
 
   brls::Application::pushActivity(new MainActivity());
 
-  while (brls::Application::mainLoop())
+  while (brls::Application::mainLoop()) // BUG: Segementation fault when the user quits the app.
     ;
 
 #ifdef _DOWNLOADER_SWITCH

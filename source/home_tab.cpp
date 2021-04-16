@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <borealis/platforms/switch/swkbd.hpp>
+#include <input.hpp>
 #include <download.hpp>
 #include <filesystem>
 #include <home_tab.hpp>
@@ -30,27 +30,12 @@ HomeTab::HomeTab() {
 }
 
 bool HomeTab::onURLButtonPressed(brls::View *view) {
-  brls::Swkbd::openForText(
-      [this](std::string str) {
-        this->current_url = str;
-#ifdef _DOWNLOADER_PC
-        brls::Logger::info("Please return to the Downloader window.");
-#endif
-      },
-      "", "", FILENAME_MAX, "Enter URL here");
-
+  this->current_url = input::getKeyboardInput("Enter URL(s) here: ", FILENAME_MAX);
   return true;
 }
 
 bool HomeTab::onFNameButtonPressed(brls::View *view) {
-  brls::Swkbd::openForText(
-      [this](std::string str) {
-        this->current_fname = str;
-#ifdef _DOWNLOADER_PC
-        brls::Logger::info("Please return to the Downloader window.");
-#endif
-      },
-      "", "", FILENAME_MAX, "Enter filename here");
+  this->current_fname = input::getKeyboardInput("Enter filename(s) here: ", FILENAME_MAX);
   return true;
 }
 
@@ -83,6 +68,8 @@ bool HomeTab::onDownloadButtonPressed(brls::View *view) {
   // Start download(s) on a different thread
   std::thread downloadThread = std::thread(&utilities::downloadFiles,
                                            std::ref(this->requestedDownloads));
+
+  // TODO: Get progress on the download and display it on the GUI
 
   if (downloadThread.joinable())
     downloadThread.join();

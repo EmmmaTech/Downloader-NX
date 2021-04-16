@@ -18,36 +18,26 @@
 
 #pragma once
 
-#include <cpr/cpr.h>
-#include <json.hpp>
-
-#include <fstream>
 #include <string>
 
-#include "constants.hpp"
-#include <unordered_map>
-
-namespace utilities {
+// A reimplementation of borealis' swkd wrapper. 
+// Instead of the developer providing a function to handle the provided string from input, it returns it.
+namespace input {
+#ifdef _DOWNLOADER_PC
 /*
- * Downloads a file using curl.
- * This function enables follow location, disabled verify peer and verify host,
- * and uses a custom write function (for Windows only).
+ * Gets input from the user if the platform is PC.
  */
-void downloadFile(const char *url, const char *filename);
-
+std::string terminalInput(const std::string& printText);
+#else
 /*
- * Downloads mulitiple files that are contained in an unordered_map.
+ * Gets input from the user if the platform is Switch.
  */
-void downloadFiles(std::unordered_map<std::string, std::string> &files);
-
-/*
- * Gets the latest tag from an api.github.com url.
- */
-std::string getLatestTag(const std::string url);
+std::string swkdInput(const std::string& printText, size_t max);
+#endif
 
 /*
- * Gets the latest download link from an api.github.com url.
+ * Gets input from both PC and Switch platforms.
+ * If the user is on PC, the provided max_characters will be ignored.
  */
-std::string getLatestDownload(const std::string url);
-
-} // namespace utilities
+std::string getKeyboardInput(const std::string& printText, size_t max_characters);
+} // namespace input

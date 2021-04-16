@@ -22,5 +22,5 @@ Downloader = executable(
     dependencies : [borealis_dependencies, curl, zipper],
     install: true,
     include_directories: [ borealis_include, include_directories('include'), lib_includes],
-    cpp_args: [ '-g', '-O2', '-DBRLS_RESOURCES="./resources/"', '-D_DOWNLOADER_PC', ] + borealis_cpp_args
+    cpp_args: [ '-g', '-O2', '-DBRLS_RESOURCES="./resources/"', '-D_DOWNLOADER_PC', '-DAPP_VERSION="v1.0.0"' ] + borealis_cpp_args
 )

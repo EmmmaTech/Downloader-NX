@@ -18,13 +18,10 @@ After you have a devkitpro environment setup, use the following commands to buil
 ```bash
 (sudo) (dkp-)pacman -S switch-glfw switch-mesa switch-glm switch-curl switch-zlib
 cd /path/to/Downloader
-make
-cd downloader-forwarder
-make
-cd ..
+make # optionally, add -j$(nproc) (won't work on Windows)
 ```
 
-Copy Downloader.nro to `/switch/Downloader/Downloader.nro` on your SD Card and copy downloader-forwarder.nro (in the downloader-forwarder folder) to `/config/Downloader/downloader-forwarder.nro`.
+Extract the output-v(VERSION HERE).zip file contained in the out folder to your SD Card. Enjoy!
 
 ## For Mac/Linux (PC)
 
@@ -53,7 +50,7 @@ Make sure the working directory when running the program is the project root (a 
 
 natinusala and contributors for making/maintaining borealis.
 
-HamletDuFromage for the Zipper fork that works on Switch and idea of the `downloader-forwarder`.
+HamletDuFromage for the Zipper fork for Switch and idea of the `downloader-forwarder`.
 
 sebastiandev for originally making Zipper.
 

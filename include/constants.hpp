@@ -18,7 +18,7 @@
 
 #pragma once
 
-#ifndef _DOWNLOADER_SWITCH
+#ifdef _DOWNLOADER_PC
 #if defined(WIN32) || defined(_WIN32) ||                                       \
     defined(__WIN32) && !defined(__CYGWIN__)
 #define _DOWNLOADER_WINDOWS
@@ -42,6 +42,7 @@ const char *correctSeperators(const char *__str);
 #define FULL_PATH_SWITCH add(PATH_SWITCH, "Downloader.nro")
 
 #define UPDATE_PATH_SWITCH add(CONFIG_PATH_SWITCH, "Downloader-Switch.zip")
+#define EXTRACT_UPDATE_PATH_SWITCH add(CONFIG_PATH_SWITCH, "switch/Downloader/Downloader.nro")
 #define UPDATE_PATH_GLFW add(CONFIG_PATH_GLFW, "Downloader-PC.zip")
 
 #define FORWARDER_PATH_SWITCH add(CONFIG_PATH_SWITCH, "downloader-forwarder.nro")
@@ -52,4 +53,3 @@ const char *correctSeperators(const char *__str);
 #define API_URL                                                                \
   "https://api.github.com/repos/EmreTech/Downloader/releases/latest"
 #define API_AGENT "EmreTech"
-#define APP_VERSION "v1.0.0"

@@ -21,7 +21,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
-#ifndef _DOWNLOADER_SWITCH
+#ifdef _DOWNLOADER_PC
 #include <zipper/unzipper.h>
 #else
 #include <unzipper.h>
@@ -29,34 +29,11 @@
 
 namespace utilities {
 
-bool is_zip_file(const std::string &str) {
-  std::filesystem::path p(str);
-
-  if (!p.has_extension())
-    return false;
-
-  if (p.extension() == ".zip")
-    return true;
-
-  return false;
-}
-
-std::string extract_filename(const std::string &str) {
-  std::filesystem::path p(str);
-
-  if (!p.has_filename())
-    return "";
-
-  return p.filename().string();
-}
-
 bool processProgress(size_t TotalToDownload, size_t NowDownloaded,
                      size_t TotalToUpload, size_t NowUploaded) {
   if (TotalToDownload <= 0)
     return true;
 
-  // TotalToDownload /= 1000;
-  // NowDownloaded /= 1000;
   return true;
 }
 

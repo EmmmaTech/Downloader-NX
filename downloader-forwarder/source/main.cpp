@@ -21,9 +21,6 @@ int main(int argc, char *argv[])
 
     std::filesystem::copy_file(DOWNLOAD_CONFIG_PATH, FULL_PATH);
     std::filesystem::remove(DOWNLOAD_CONFIG_SWITCH);
-
-    if (!std::filesystem::exists(CONFIG_PATH))
-        std::filesystem::create_directory(CONFIG_PATH);
     
     envSetNextLoad(FULL_PATH, ("\"" + std::string(FULL_PATH) + "\"").c_str());
     return EXIT_SUCCESS;
