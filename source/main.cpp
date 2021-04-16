@@ -30,22 +30,19 @@
 
 using namespace brls::literals;
 
-void initFolders() {
-  const char *config_path =
 #ifdef _DOWNLOADER_SWITCH
-      CONFIG_PATH_SWITCH;
-#else
-      CONFIG_PATH_GLFW;
+const char *config_path = CONFIG_PATH_SWITCH;
 #endif
 
-  const char *download_path =
+const char *download_path =
 #ifdef _DOWNLOADER_SWITCH
       DOWNLOAD_PATH_SWITCH;
 #else
       DOWNLOAD_PATH_GLFW;
 #endif
 
-  try {
+void initFolders() {
+#ifdef _DOWNLOADER_SWITCH
     if (!std::filesystem::exists(config_path))
       std::filesystem::create_directories(config_path);
 
@@ -53,6 +50,7 @@ void initFolders() {
       std::filesystem::remove(config_path);
       std::filesystem::create_directories(config_path);
     }
+#endif
 
     if (!std::filesystem::exists(download_path))
       std::filesystem::create_directories(download_path);
@@ -61,9 +59,6 @@ void initFolders() {
       std::filesystem::remove(download_path);
       std::filesystem::create_directories(download_path);
     }
-  } catch (std::filesystem::filesystem_error &e) {
-    brls::Logger::error("{}", e.what());
-  }
 }
 
 int main(int argc, char *argv[]) {
@@ -71,6 +66,17 @@ int main(int argc, char *argv[]) {
   socketInitializeDefault();
 #endif
   initFolders();
+
+#ifdef _DOWNLOADER_SWITCH
+if (!std::filesystem::exists(ROMFS_FORWARDER_PATH_SWITCH))
+{
+  brls::Logger::error("Romfs Forwarder Path does not exist, updates are disabled.");
+  // TODO: Disable updates
+}
+
+else if (!std::filesystem::exists(FORWARDER_PATH_SWITCH))
+  std::filesystem::copy_file(ROMFS_FORWARDER_PATH_SWITCH, FORWARDER_PATH_SWITCH); // This is REQUIRED in order to update the app.
+#endif
 
   if (!brls::Application::init()) {
     brls::Logger::error("Unable to init the Downloader app");
@@ -85,7 +91,7 @@ int main(int argc, char *argv[]) {
 
   brls::Application::pushActivity(new MainActivity());
 
-  while (brls::Application::mainLoop()) // BUG: Segementation fault when the user quits the app.
+  while (brls::Application::mainLoop())
     ;
 
 #ifdef _DOWNLOADER_SWITCH

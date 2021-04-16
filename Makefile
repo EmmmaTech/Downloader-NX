@@ -181,28 +181,24 @@ ifneq ($(ROMFS),)
 	export NROFLAGS += --romfsdir=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: all clean
+.PHONY: all $(ROMFS) clean
 
 #---------------------------------------------------------------------------------
 all: $(ROMFS_TARGETS) | $(BUILD)
 	@mkdir -p $(OUTPUT_FOLDER)
 	@MSYS2_ARG_CONV_EXCL="-D;$(MSYS2_ARG_CONV_EXCL)" $(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+
+$(ROMFS):
 	@echo Making and copying downloader-forwarder...
 	@$(MAKE) -C $(CURDIR)/downloader-forwarder -f $(CURDIR)/downloader-forwarder/Makefile
-	@cp $(CURDIR)/downloader-forwarder/downloader-forwarder.nro $(OUTPUT_FOLDER)/downloader-forwarder.nro
-	@echo Bundling into zip file...
-	@mkdir -p $(OUTPUT_FOLDER)/switch/Downloader
-	@mkdir -p $(OUTPUT_FOLDER)/config/Downloader
-	@cp $(OUTPUT_FOLDER)/Downloader.nro $(OUTPUT_FOLDER)/switch/Downloader
-	@cp $(OUTPUT_FOLDER)/downloader-forwarder.nro $(OUTPUT_FOLDER)/config/Downloader
-	@zip -r $(OUTPUT_FOLDER)/output-v$(APP_VERSION).zip ./out/config ./out/switch
+	@cp $(CURDIR)/downloader-forwarder/downloader-forwarder.nro $(CURDIR)/$(ROMFS)/downloader-forwarder.nro
 
 $(BUILD):
 	@mkdir -p $@
 
 ifneq ($(strip $(ROMFS_TARGETS)),)
 
-$(ROMFS_TARGETS): | $(ROMFS_FOLDERS)
+$(ROMFS_TARGETS): | $(ROMFS_FOLDERS) $(ROMFS)
 
 $(ROMFS_FOLDERS):
 	@mkdir -p $@
@@ -238,6 +234,7 @@ clean:
 	@echo clean ...
 ifeq ($(strip $(APP_JSON)),)
 	@rm -fr $(BUILD) $(ROMFS_FOLDERS) $(OUTPUT).nro $(OUTPUT).nacp $(OUTPUT).elf
+	@rm -f $(CURDIR)/$(ROMFS)/downloader-forwarder.nro
 else
 	@rm -fr $(BUILD) $(ROMFS_FOLDERS) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif
