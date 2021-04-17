@@ -15,6 +15,7 @@ jobs:
       
       - name: Install necessary libraries
         run: |
+              sudo dkp-pacman -S --noconfirm $(dkp-pacman -Ssq "switch-*")
               sudo dkp-pacman -R --noconfirm $(dkp-pacman -Ssq "switch-*")
               sudo dkp-pacman -S --noconfirm switch-dev switch-glfw switch-mesa switch-glm switch-curl switch-zlib
 
