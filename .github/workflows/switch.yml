@@ -15,7 +15,7 @@ jobs:
       
       - name: Install necessary libraries
         run: |
-              sudo dkp-pacman -R --noconfirm $(dkp-pacman -Ssq "switch-*")
+              sudo dkp-pacman -R --noconfirm $(dkp-pacman -Ssq "switch-*" | grep -v hactool)
 
       - name: Build Downloader
         run: |
