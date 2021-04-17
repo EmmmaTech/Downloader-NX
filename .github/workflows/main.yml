@@ -8,14 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: hamletdufromage/devkita64_devkitarm
-    #container: devkitpro/devkita64_devkitarm
+    container: devkitpro/devkita64_devkitarm
     
     steps:
       - uses: actions/checkout@v2
         
       - name: Build Downloader
         run: |
+              sudo dkp-pacman -R switch-tinyxml2
               make -j$(nproc)
       
       - name: Upload a Build Artifact
