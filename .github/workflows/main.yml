@@ -8,7 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: devkitpro/devkita64_devkitarm
+    container: hamletdufromage/devkita64_devkitarm
+    #container: devkitpro/devkita64_devkitarm
     
     steps:
       - uses: actions/checkout@v2
