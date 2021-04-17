@@ -21,7 +21,7 @@ cd /path/to/Downloader
 make # optionally, add -j$(nproc) (won't work on Windows)
 ```
 
-Extract the output-v(VERSION HERE).zip file contained in the out folder to your SD Card. Enjoy!
+Copy the Downloader.nro file to `/switch/Downloader` in the SD Card. Enjoy!
 
 ## For Mac/Linux (PC)
 

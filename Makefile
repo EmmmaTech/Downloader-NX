@@ -188,7 +188,7 @@ all: $(ROMFS_TARGETS) | $(BUILD)
 	@mkdir -p $(OUTPUT_FOLDER)
 	@MSYS2_ARG_CONV_EXCL="-D;$(MSYS2_ARG_CONV_EXCL)" $(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
-$(ROMFS):
+$(ROMFS): # BUG: ROMFS image for the main Downloader app is copied into downloader-forwarder. It's not a major issue since ROMFS isn't used in downloader-forwarder anyways.
 	@echo Making and copying downloader-forwarder...
 	@$(MAKE) -C $(CURDIR)/downloader-forwarder -f $(CURDIR)/downloader-forwarder/Makefile
 	@cp $(CURDIR)/downloader-forwarder/downloader-forwarder.nro $(CURDIR)/$(ROMFS)/downloader-forwarder.nro
@@ -233,8 +233,7 @@ endif
 clean:
 	@echo clean ...
 ifeq ($(strip $(APP_JSON)),)
-	@rm -fr $(BUILD) $(ROMFS_FOLDERS) $(OUTPUT).nro $(OUTPUT).nacp $(OUTPUT).elf
-	@rm -f $(CURDIR)/$(ROMFS)/downloader-forwarder.nro
+	@rm -fr $(BUILD) $(ROMFS_FOLDERS) $(OUTPUT).nro $(OUTPUT).nacp $(OUTPUT).elf $(CURDIR)/$(ROMFS)/downloader-forwarder.nro $(OUTPUT_FOLDER)
 else
 	@rm -fr $(BUILD) $(ROMFS_FOLDERS) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif

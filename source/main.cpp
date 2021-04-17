@@ -71,11 +71,13 @@ int main(int argc, char *argv[]) {
 if (!std::filesystem::exists(ROMFS_FORWARDER_PATH_SWITCH))
 {
   brls::Logger::error("Romfs Forwarder Path does not exist, updates are disabled.");
-  // TODO: Disable updates
+  canUpdate = false;
 }
 
-else if (!std::filesystem::exists(FORWARDER_PATH_SWITCH))
-  std::filesystem::copy_file(ROMFS_FORWARDER_PATH_SWITCH, FORWARDER_PATH_SWITCH); // This is REQUIRED in order to update the app.
+else if (std::filesystem::exists(FORWARDER_PATH_SWITCH))
+  std::filesystem::remove(FORWARDER_PATH_SWITCH);
+
+std::filesystem::copy_file(ROMFS_FORWARDER_PATH_SWITCH, FORWARDER_PATH_SWITCH); // This is REQUIRED in order to update the app.
 #endif
 
   if (!brls::Application::init()) {

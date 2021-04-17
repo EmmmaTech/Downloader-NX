@@ -40,15 +40,19 @@ UpdaterTab::UpdaterTab() {
 brls::View *UpdaterTab::create() { return new UpdaterTab(); }
 
 bool UpdaterTab::onUpdateButtonPressed(brls::View *view) {
-  std::string newTag = "v1.0.1" /*utilities::getLatestTag(API_URL)*/;
+  if (canUpdate) {
+    std::string newTag = "v1.0.1" /*utilities::getLatestTag(API_URL)*/;
 
-  if (newTag == std::string(APP_VERSION))
-    this->info_label->setText("main/update/update_not_found"_i18n);
-  else {
-    this->info_label->setText("main/update/update_found"_i18n);
-    this->yes_button->show([] {});
-    this->no_button->show([] {});
-  }
+    if (newTag == std::string(APP_VERSION))
+      this->info_label->setText("main/update/update_not_found"_i18n);
+    else {
+      this->info_label->setText("main/update/update_found"_i18n);
+      this->yes_button->show([] {});
+      this->no_button->show([] {});
+    }
+  } else
+    this->info_label->setText("main/update/update_cannot_check"_i18n);
+  
 
   return true;
 }
