@@ -6,21 +6,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  Downloader:
     runs-on: ubuntu-latest
-    container: devkitpro/devkita64_devkitarm
+    #container: devkitpro/devkita64_devkitarm
     
     steps:
       - uses: actions/checkout@v2
       
-      - name: Install necessary libraries
+      - name: Install devkitpro
         run: |
-              sudo dkp-pacman -S --noconfirm $(dkp-pacman -Ssq "switch-*")
-              sudo dkp-pacman -R --noconfirm $(dkp-pacman -Ssq "switch-*")
+              wget https://github.com/devkitPro/pacman/releases/download/v1.0.2/devkitpro-pacman.amd64.deb
+              sudo dpkg -i devkitpro-pacman.deb
               sudo dkp-pacman -S --noconfirm switch-dev switch-glfw switch-mesa switch-glm switch-curl switch-zlib
+
+      #- name: Install necessary libraries
+      #  run: |
+      #        sudo dkp-pacman -R --noconfirm $(dkp-pacman -Ssq "switch-*")
 
       - name: Build Downloader
         run: |
+              echo ##########################
+              echo #     SETTING PATH       #
+              echo ##########################
+              echo
+              export DEVKITPRO=/opt/devkitpro
+              export DEVKITARM=${DEVKITPRO}/devkitARM
+              export DEVKITPPC=${DEVKITPRO}/devkitPPC
+              export PATH=${DEVKITPRO}/tools/bin:$PATH
               make -j$(nproc)
       
       - name: Upload a Build Artifact
