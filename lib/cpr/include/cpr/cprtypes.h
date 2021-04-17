@@ -1,6 +1,9 @@
 #ifndef CPR_CPR_TYPES_H
 #define CPR_CPR_TYPES_H
 
+#ifdef __SWITCH__
+#include <sys/select.h>
+#endif
 #include <curl/curl.h>
 #include <initializer_list>
 #include <map>
