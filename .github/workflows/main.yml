@@ -1,0 +1,25 @@
+name: Build Downloader for Switch
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: hamletdufromage/devkita64_devkitarm
+    #container: devkitpro/devkita64_devkitarm
+    
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Build Downloader
+        run: |
+              make -j$(nproc)
+      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.3
+        with:
+          name: Downloader.nro
+          path: Downloader/out/Downloader.nro
