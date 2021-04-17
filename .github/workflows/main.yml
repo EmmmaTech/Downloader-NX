@@ -12,10 +12,14 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-        
-      - name: Build Downloader
+      
+      - name: Fix installed libraries
         run: |
               sudo dkp-pacman -R --noconfirm switch-tinyxml2
+              sudo dkp-pacman -S --noconfirm libnx
+
+      - name: Build Downloader
+        run: |
               make -j$(nproc)
       
       - name: Upload a Build Artifact
