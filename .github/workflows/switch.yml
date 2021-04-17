@@ -8,7 +8,7 @@ on:
 jobs:
   Downloader:
     runs-on: ubuntu-latest
-    container: devkitpro/devkita64
+    container: devkitpro/devkita64_devkitarm
     
     steps:
       - uses: actions/checkout@v2
