@@ -15,7 +15,7 @@ jobs:
         
       - name: Build Downloader
         run: |
-              sudo dkp-pacman -R switch-tinyxml2
+              sudo dkp-pacman -R --noconfirm switch-tinyxml2
               make -j$(nproc)
       
       - name: Upload a Build Artifact
