@@ -3,6 +3,10 @@
 
 #include <cassert>
 #include <cstdint>
+
+#ifdef __SWITCH__
+#include <sys/select.h>
+#endif
 #include <curl/curl.h>
 #include <memory>
 #include <string>
