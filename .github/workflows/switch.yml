@@ -13,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Fix installed libraries
+      - name: Install necessary libraries
         run: |
-              sudo dkp-pacman -R --noconfirm switch-tinyxml2
-              sudo dkp-pacman -S --noconfirm libnx
+              sudo dkp-pacman -R --noconfirm $(dkp-pacman -Ssq "switch-*")
+              sudo dkp-pacman -S --noconfirm switch-dev switch-glfw switch-mesa switch-glm switch-curl switch-zlib
 
       - name: Build Downloader
         run: |
