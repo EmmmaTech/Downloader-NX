@@ -14,9 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Install necessary libraries
-        run: |
-              sudo dkp-pacman -R --noconfirm switch-tinyxml2
+      - name: Remove switch-tinyxml2
+        run: sudo dkp-pacman -R --noconfirm switch-tinyxml2 # This is needed since it will interfere with borealis' tinyxml2 later on
 
       - name: Build Downloader
         run: |
