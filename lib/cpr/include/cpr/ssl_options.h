@@ -86,6 +86,7 @@ class CertFile {
   public:
     // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     CertFile(std::string&& p_filename) : filename(std::move(p_filename)) {}
+    virtual ~CertFile() = 0;
 
     const std::string filename;
 
@@ -115,6 +116,8 @@ class KeyFile {
     template <typename FileType, typename PassType>
     KeyFile(FileType&& p_filename, PassType p_password)
             : filename(std::forward<FileType>(p_filename)), password(std::move(p_password)) {}
+
+    virtual ~KeyFile() = 0;
 
     std::string filename;
     std::string password;
