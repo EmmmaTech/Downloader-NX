@@ -53,4 +53,4 @@ const char *correctSeperators(const char *__str);
   "https://api.github.com/repos/EmreTech/Downloader/releases/latest"
 #define API_AGENT "EmreTech"
 
-static bool canUpdate = true;
+static bool canUpdate;
