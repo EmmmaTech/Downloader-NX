@@ -20,85 +20,90 @@
 #include <switch.h>
 #endif
 
-#include <borealis.hpp>
-#include <filesystem>
-
 #include "constants.hpp"
 #include "home_tab.hpp"
 #include "main_activity.hpp"
 #include "updater_tab.hpp"
 
+#include <borealis.hpp>
+#include <filesystem>
+
 using namespace brls::literals;
 
 #ifdef _DOWNLOADER_SWITCH
-const char *config_path = CONFIG_PATH_SWITCH;
+const char* config_path = CONFIG_PATH_SWITCH;
 #endif
 
-const char *download_path =
+const char* download_path =
 #ifdef _DOWNLOADER_SWITCH
-      DOWNLOAD_PATH_SWITCH;
+    DOWNLOAD_PATH_SWITCH;
 #else
-      DOWNLOAD_PATH_GLFW;
+    DOWNLOAD_PATH_GLFW;
 #endif
 
-void initFolders() {
+void initFolders()
+{
 #ifdef _DOWNLOADER_SWITCH
     if (!std::filesystem::exists(config_path))
-      std::filesystem::create_directories(config_path);
+        std::filesystem::create_directories(config_path);
 
-    else if (!std::filesystem::is_directory(config_path)) {
-      std::filesystem::remove(config_path);
-      std::filesystem::create_directories(config_path);
+    else if (!std::filesystem::is_directory(config_path))
+    {
+        std::filesystem::remove(config_path);
+        std::filesystem::create_directories(config_path);
     }
 #endif
 
     if (!std::filesystem::exists(download_path))
-      std::filesystem::create_directories(download_path);
+        std::filesystem::create_directories(download_path);
 
-    else if (!std::filesystem::is_directory(download_path)) {
-      std::filesystem::remove(download_path);
-      std::filesystem::create_directories(download_path);
+    else if (!std::filesystem::is_directory(download_path))
+    {
+        std::filesystem::remove(download_path);
+        std::filesystem::create_directories(download_path);
     }
 }
 
-int main(int argc, char *argv[]) {
-#ifdef _DOWNLOADER_SWITCH
-  socketInitializeDefault();
-#endif
-  initFolders();
-
-#ifdef _DOWNLOADER_SWITCH
-if (!std::filesystem::exists(ROMFS_FORWARDER_PATH_SWITCH))
+int main(int argc, char* argv[])
 {
-  brls::Logger::error("Romfs Forwarder Path does not exist, updates are disabled.");
-  canUpdate = false;
-}
-
-else if (std::filesystem::exists(FORWARDER_PATH_SWITCH))
-  std::filesystem::remove(FORWARDER_PATH_SWITCH);
-
-std::filesystem::copy_file(ROMFS_FORWARDER_PATH_SWITCH, FORWARDER_PATH_SWITCH); // This is REQUIRED in order to update the app.
+#ifdef _DOWNLOADER_SWITCH
+    socketInitializeDefault();
 #endif
-
-  if (!brls::Application::init()) {
-    brls::Logger::error("Unable to init the Downloader app");
-    return EXIT_FAILURE;
-  }
-
-  brls::Application::createWindow("main/title"_i18n);
-  brls::Application::setGlobalQuit(true);
-
-  brls::Application::registerXMLView("HomeTab", HomeTab::create);
-  brls::Application::registerXMLView("UpdaterTab", UpdaterTab::create);
-
-  brls::Application::pushActivity(new MainActivity());
-
-  while (brls::Application::mainLoop())
-    ;
+    initFolders();
 
 #ifdef _DOWNLOADER_SWITCH
-  socketExit();
+    if (!std::filesystem::exists(ROMFS_FORWARDER_PATH_SWITCH))
+    {
+        brls::Logger::error("Romfs Forwarder Path does not exist, updates are disabled.");
+        canUpdate = false;
+    }
+
+    else if (std::filesystem::exists(FORWARDER_PATH_SWITCH))
+        std::filesystem::remove(FORWARDER_PATH_SWITCH);
+
+    std::filesystem::copy_file(ROMFS_FORWARDER_PATH_SWITCH, FORWARDER_PATH_SWITCH); // This is REQUIRED in order to update the app.
 #endif
 
-  return EXIT_SUCCESS;
+    if (!brls::Application::init())
+    {
+        brls::Logger::error("Unable to init the Downloader app");
+        return EXIT_FAILURE;
+    }
+
+    brls::Application::createWindow("main/title"_i18n);
+    brls::Application::setGlobalQuit(true);
+
+    brls::Application::registerXMLView("HomeTab", HomeTab::create);
+    brls::Application::registerXMLView("UpdaterTab", UpdaterTab::create);
+
+    brls::Application::pushActivity(new MainActivity());
+
+    while (brls::Application::mainLoop())
+        ;
+
+#ifdef _DOWNLOADER_SWITCH
+    socketExit();
+#endif
+
+    return EXIT_SUCCESS;
 }

@@ -18,9 +18,10 @@
 
 #pragma once
 
+#include <string>
+
 #ifdef _DOWNLOADER_PC
-#if defined(WIN32) || defined(_WIN32) ||                                       \
-    defined(__WIN32) && !defined(__CYGWIN__)
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #define _DOWNLOADER_WINDOWS
 #else
 #define _DOWNLOADER_UNIX
@@ -31,9 +32,9 @@
  * Adds two const char *'s together. Next time I should use the built-in
  * function for this...
  */
-const char *add(const char *__str1, const char *__str2);
+const char* add(const char* __str1, const char* __str2);
 
-const char *correctSeperators(const char *__str);
+const char* correctSeperators(const char* __str);
 
 #define CONFIG_PATH_SWITCH "/config/Downloader/"
 
@@ -49,8 +50,9 @@ const char *correctSeperators(const char *__str);
 #define UPDATE_PATH_SWITCH add(CONFIG_PATH_SWITCH, "Downloader.nro")
 #define UPDATE_PATH_GLFW add(DOWNLOAD_PATH_GLFW, "Downloader-PC.zip")
 
-#define API_URL                                                                \
-  "https://api.github.com/repos/EmreTech/Downloader/releases/latest"
+#define API_URL \
+    "https://api.github.com/repos/EmreTech/Downloader/releases/latest"
 #define API_AGENT "EmreTech"
 
 static bool canUpdate;
+static std::string downloadMeter;

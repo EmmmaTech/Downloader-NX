@@ -18,19 +18,20 @@
 
 #include <input.hpp>
 
-
 #ifdef _DOWNLOADER_SWITCH
 #include <switch.h>
 #else
 #include <iostream>
 #endif
 
-namespace input {
+namespace input
+{
 #ifdef _DOWNLOADER_PC
 std::string terminalInput(const std::string& printText)
 {
     std::string output;
-    std::cout << printText << '\n' << "> ";
+    std::cout << printText << '\n'
+              << "> ";
     std::getline(std::cin, output);
     std::cout << "Please return to the Downloader window." << '\n';
     return output;

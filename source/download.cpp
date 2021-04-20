@@ -18,109 +18,140 @@
 
 #include <borealis.hpp>
 #include <download.hpp>
-#include <iostream>
-#include <math.h>
-#include <vector>
 #ifdef _DOWNLOADER_PC
 #include <zipper/unzipper.h>
 #else
 #include <unzipper.h>
 #endif
 
-namespace utilities {
+namespace utilities
+{
 
 bool processProgress(size_t TotalToDownload, size_t NowDownloaded,
-                     size_t TotalToUpload, size_t NowUploaded) {
-  if (TotalToDownload <= 0)
+    size_t TotalToUpload, size_t NowUploaded)
+{
+    if (TotalToDownload <= 0)
+        return true;
+
+    int totaldots           = 40;
+    auto fractiondownloaded = NowDownloaded / TotalToDownload;
+    int dots                = (int)fractiondownloaded * totaldots;
+
+    int ii        = 0;
+    downloadMeter = std::to_string(fractiondownloaded * 100) + "% [";
+
+    for (; ii < dots; ii++)
+        downloadMeter += "=";
+
+    for (; ii < totaldots; ii++)
+        downloadMeter += " ";
+
+    downloadMeter += "]";
+
+    std::cout << '\r';
+    std::cout << downloadMeter;
+    fflush(stdout);
+
     return true;
-
-  return true;
 }
 
-void downloadFile(const char *url, const char *filename) {
-  cpr::Response r =
-      cpr::Get(cpr::Url{url}, cpr::ProgressCallback(processProgress));
+void downloadFile(const char* url, const char* filename)
+{
+    cpr::Response r = cpr::Get(cpr::Url { url }, cpr::ProgressCallback(processProgress));
 
-  if (r.error.code != cpr::ErrorCode::OK) {
-    std::string error =
-        "Something went wrong when attemping to download file from ";
-    error += url;
-    error += ".";
-    throw std::runtime_error(error.c_str());
-  }
-
-  std::fstream file;
-  file.open(filename, std::ios::in | std::ios::out | std::ios::trunc);
-
-  if (file.good() || !file.bad() || file.fail())
-    file << r.text;
-
-  else {
-    std::string error =
-        "Something went wrong when attemping to save downloaded file from ";
-    error += url;
-    error += ".";
-    throw std::runtime_error(error.c_str());
-  }
-}
-
-void downloadFiles(std::unordered_map<std::string, std::string> &files) {
-  for (const auto &e : files) {
-    try {
-      downloadFile(e.first.c_str(), e.second.c_str());
-    } catch (std::runtime_error &e) {
-      brls::Logger::error("Error: {}", e.what());
+    if (r.error.code != cpr::ErrorCode::OK)
+    {
+        std::string error = "Something went wrong when attemping to download file from ";
+        error += url;
+        error += ".";
+        throw std::runtime_error(error.c_str());
     }
-  }
+
+    std::fstream file;
+    file.open(filename, std::ios::in | std::ios::out | std::ios::trunc);
+
+    if (file.good() || !file.bad() || file.fail())
+        file << r.text;
+
+    else
+    {
+        std::string error = "Something went wrong when attemping to save downloaded file from ";
+        error += url;
+        error += ".";
+        throw std::runtime_error(error.c_str());
+    }
 }
 
-std::string getLatestTag(const std::string url) {
-  const char *download_path =
-#ifdef _DOWNLOADER_SWITCH
-      add(DOWNLOAD_PATH_SWITCH, "latest-tag.json");
-#else
-      add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
-#endif
-  downloadFile(url.c_str(), download_path);
-
-  nlohmann::json api_data;
-  std::ifstream api_file(download_path);
-
-  api_file >> api_data;
-  api_file.close();
-
-  try {
-    return api_data["tag_name"].get<std::string>();
-  } catch (...) {
-  }
-
-  return "";
+void downloadFiles(std::unordered_map<std::string, std::string>& files)
+{
+    for (const auto& e : files)
+    {
+        try
+        {
+            downloadFile(e.first.c_str(), e.second.c_str());
+        }
+        catch (std::runtime_error& e)
+        {
+            brls::Logger::error("Error: {}", e.what());
+        }
+    }
 }
 
-std::string getLatestDownload(const std::string url) {
-  const char *download_path =
+std::string getLatestTag(const std::string url)
+{
+    const char* download_path =
 #ifdef _DOWNLOADER_SWITCH
-      add(DOWNLOAD_PATH_SWITCH, "latest-tag.json");
+        add(DOWNLOAD_PATH_SWITCH, "latest-tag.json");
 #else
-      add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
+        add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
+#endif
+    downloadFile(url.c_str(), download_path);
+
+    nlohmann::json api_data;
+    std::ifstream api_file(download_path);
+
+    api_file >> api_data;
+    api_file.close();
+
+    try
+    {
+        return api_data["tag_name"].get<std::string>();
+    }
+    catch (...)
+    {
+    }
+
+    return "";
+}
+
+std::string getLatestDownload(const std::string url)
+{
+    const char* download_path =
+#ifdef _DOWNLOADER_SWITCH
+        add(DOWNLOAD_PATH_SWITCH, "latest-tag.json");
+#else
+        add(DOWNLOAD_PATH_GLFW, "latest-tag.json");
 #endif
 
-  downloadFile(url.c_str(), download_path);
+    downloadFile(url.c_str(), download_path);
 
-  nlohmann::json api_data;
-  std::ifstream api_file(download_path);
+    nlohmann::json api_data;
+    std::ifstream api_file(download_path);
 
-  api_file >> api_data;
-  api_file.close();
+    api_file >> api_data;
+    api_file.close();
 
-  std::string downloadURL;
+    std::string downloadURL;
 
-  try {
-    for (auto &array : api_data["assets"])
-      downloadURL = array["browser_download_url"].get<std::string>();
-  } catch (...) {
-  }
+    try
+    {
+        for (auto& array : api_data["assets"])
+            downloadURL = array["browser_download_url"].get<std::string>();
+    }
+    catch (...)
+    {
+    }
 
-  return downloadURL;
+    return downloadURL;
 }
 } // namespace utilities

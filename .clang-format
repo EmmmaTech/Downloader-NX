@@ -1,0 +1,12 @@
+﻿---
+AccessModifierOffset: -2
+AlignConsecutiveAssignments: 'true'
+BasedOnStyle: WebKit
+BreakBeforeBraces: Allman
+IncludeBlocks: Regroup
+IndentCaseLabels: 'true'
+PointerAlignment: Left
+SortIncludes: 'true'
+Standard: Cpp11
+
+...

@@ -16,74 +16,72 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <input.hpp>
 #include <download.hpp>
 #include <filesystem>
 #include <home_tab.hpp>
-#include <thread>
+#include <input.hpp>
 
-HomeTab::HomeTab() {
-  this->inflateFromXMLRes("xml/tabs/home.xml");
-  BRLS_REGISTER_CLICK_BY_ID("url_button", this->onURLButtonPressed);
-  BRLS_REGISTER_CLICK_BY_ID("fname_button", this->onFNameButtonPressed);
-  BRLS_REGISTER_CLICK_BY_ID("download_button", this->onDownloadButtonPressed);
+HomeTab::HomeTab()
+{
+    this->inflateFromXMLRes("xml/tabs/home.xml");
+    BRLS_REGISTER_CLICK_BY_ID("url_button", this->onURLButtonPressed);
+    BRLS_REGISTER_CLICK_BY_ID("fname_button", this->onFNameButtonPressed);
+    BRLS_REGISTER_CLICK_BY_ID("download_button", this->onDownloadButtonPressed);
 }
 
-bool HomeTab::onURLButtonPressed(brls::View *view) {
-  this->current_url = input::getKeyboardInput("Enter URL(s) here: ", FILENAME_MAX);
-  return true;
+bool HomeTab::onURLButtonPressed(brls::View* view)
+{
+    this->current_url = input::getKeyboardInput("Enter URL(s) here: ", FILENAME_MAX);
+    return true;
 }
 
-bool HomeTab::onFNameButtonPressed(brls::View *view) {
-  this->current_fname = input::getKeyboardInput("Enter filename(s) here: ", FILENAME_MAX);
-  return true;
+bool HomeTab::onFNameButtonPressed(brls::View* view)
+{
+    this->current_fname = input::getKeyboardInput("Enter filename(s) here: ", FILENAME_MAX);
+    return true;
 }
 
-bool HomeTab::onDownloadButtonPressed(brls::View *view) {
-  const char *download_path =
+bool HomeTab::onDownloadButtonPressed(brls::View* view)
+{
+    const char* download_path =
 #ifdef _DOWNLOADER_SWITCH
-      DOWNLOAD_PATH_SWITCH;
+        DOWNLOAD_PATH_SWITCH;
 #else
-      DOWNLOAD_PATH_GLFW;
+        DOWNLOAD_PATH_GLFW;
 #endif
 
-  // Function cannot run if current_url and current_fname are empty
-  if (this->current_url.empty() || this->current_fname.empty()) {
-    brls::Logger::warning("Current URL and/or current filename are empty. "
-                          "Please use their buttons to set them.");
+    // Function cannot run if current_url and current_fname are empty
+    if (this->current_url.empty() || this->current_fname.empty())
+    {
+        brls::Logger::warning("Current URL and/or current filename are empty. "
+                              "Please use their buttons to set them.");
+        return true;
+    }
+
+    // Initalize some variables for later use
+    std::istringstream iss_1(this->current_url);
+    std::istringstream iss_2(this->current_fname);
+    std::string url, fname;
+
+    // Add elements to the requestedDownloads map
+    while (iss_1 >> url && iss_2 >> fname)
+    {
+        fname                         = download_path + fname;
+        this->requestedDownloads[url] = fname;
+    }
+
+    utilities::downloadFiles(this->requestedDownloads);
+
+    // Cleanup
+    this->requestedDownloads.clear();
+
+    this->current_url.clear();
+    this->current_url.shrink_to_fit();
+
+    this->current_fname.clear();
+    this->current_fname.shrink_to_fit();
+
     return true;
-  }
-
-  // Initalize some variables for later use
-  std::istringstream iss_1(this->current_url);
-  std::istringstream iss_2(this->current_fname);
-  std::string url, fname;
-
-  // Add elements to the requestedDownloads map
-  while (iss_1 >> url && iss_2 >> fname) {
-    fname = download_path + fname;
-    this->requestedDownloads[url] = fname;
-  }
-
-  // Start download(s) on a different thread
-  std::thread downloadThread = std::thread(&utilities::downloadFiles,
-                                           std::ref(this->requestedDownloads));
-
-  // TODO: Get progress on the download and display it on the GUI
-
-  if (downloadThread.joinable())
-    downloadThread.join();
-
-  // Cleanup
-  this->requestedDownloads.clear();
-
-  this->current_url.clear();
-  this->current_url.shrink_to_fit();
-
-  this->current_fname.clear();
-  this->current_fname.shrink_to_fit();
-
-  return true;
 }
 
-brls::View *HomeTab::create() { return new HomeTab(); }
+brls::View* HomeTab::create() { return new HomeTab(); }

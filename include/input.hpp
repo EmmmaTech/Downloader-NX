@@ -20,9 +20,10 @@
 
 #include <string>
 
-// A reimplementation of borealis' swkd wrapper. 
+// A reimplementation of borealis' swkd wrapper.
 // Instead of the developer providing a function to handle the provided string from input, it returns it.
-namespace input {
+namespace input
+{
 #ifdef _DOWNLOADER_PC
 /*
  * Gets input from the user if the platform is PC.

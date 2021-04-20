@@ -18,27 +18,28 @@
 
 #pragma once
 
-#include <cpr/cpr.h>
-#include <json.hpp>
-
-#include <fstream>
-#include <string>
-
 #include "constants.hpp"
+
+#include <cpr/cpr.h>
+#include <fstream>
+#include <iostream>
+#include <json.hpp>
+#include <string>
 #include <unordered_map>
 
-namespace utilities {
+namespace utilities
+{
 /*
  * Downloads a file using curl.
  * This function enables follow location, disabled verify peer and verify host,
  * and uses a custom write function (for Windows only).
  */
-void downloadFile(const char *url, const char *filename);
+void downloadFile(const char* url, const char* filename);
 
 /*
  * Downloads mulitiple files that are contained in an unordered_map.
  */
-void downloadFiles(std::unordered_map<std::string, std::string> &files);
+void downloadFiles(std::unordered_map<std::string, std::string>& files);
 
 /*
  * Gets the latest tag from an api.github.com url.

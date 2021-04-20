@@ -26,63 +26,70 @@
 
 using namespace brls::literals;
 
-UpdaterTab::UpdaterTab() {
-  this->inflateFromXMLRes("xml/tabs/updater.xml");
+UpdaterTab::UpdaterTab()
+{
+    this->inflateFromXMLRes("xml/tabs/updater.xml");
 
-  this->yes_button->hide([] {});
-  this->no_button->hide([] {});
+    this->yes_button->hide([] {});
+    this->no_button->hide([] {});
 
-  BRLS_REGISTER_CLICK_BY_ID("update_button", this->onUpdateButtonPressed);
-  BRLS_REGISTER_CLICK_BY_ID("yes", this->onYesButtonPressed);
-  BRLS_REGISTER_CLICK_BY_ID("no", this->onNoButtonPressed);
+    BRLS_REGISTER_CLICK_BY_ID("update_button", this->onUpdateButtonPressed);
+    BRLS_REGISTER_CLICK_BY_ID("yes", this->onYesButtonPressed);
+    BRLS_REGISTER_CLICK_BY_ID("no", this->onNoButtonPressed);
 }
 
-brls::View *UpdaterTab::create() { return new UpdaterTab(); }
+brls::View* UpdaterTab::create() { return new UpdaterTab(); }
 
-bool UpdaterTab::onUpdateButtonPressed(brls::View *view) {
-  if (canUpdate) {
-    std::string newTag = "v1.0.1" /*utilities::getLatestTag(API_URL)*/;
+bool UpdaterTab::onUpdateButtonPressed(brls::View* view)
+{
+    if (canUpdate)
+    {
+        std::string newTag = "v1.0.1" /*utilities::getLatestTag(API_URL)*/;
 
-    if (newTag == std::string(APP_VERSION))
-      this->info_label->setText("main/update/update_not_found"_i18n);
-    else {
-      this->info_label->setText("main/update/update_found"_i18n);
-      this->yes_button->show([] {});
-      this->no_button->show([] {});
+        if (newTag == std::string(APP_VERSION))
+            this->info_label->setText("main/update/update_not_found"_i18n);
+        else
+        {
+            this->info_label->setText("main/update/update_found"_i18n);
+            this->yes_button->show([] {});
+            this->no_button->show([] {});
+        }
     }
-  } else
-    this->info_label->setText("main/update/update_cannot_check"_i18n);
-  
+    else
+        this->info_label->setText("main/update/update_cannot_check"_i18n);
 
-  return true;
-}
-
-bool UpdaterTab::onYesButtonPressed(brls::View *view) {
-  std::string downloadURL = utilities::getLatestDownload(API_URL);
-  brls::Logger::debug("Download URL: {}", downloadURL);
-  bool res = this->updateApp(downloadURL);
-  if (res)
     return true;
-  else
-    return false;
 }
 
-bool UpdaterTab::updateApp(const std::string &url) {
+bool UpdaterTab::onYesButtonPressed(brls::View* view)
+{
+    std::string downloadURL = utilities::getLatestDownload(API_URL);
+    brls::Logger::debug("Download URL: {}", downloadURL);
+    bool res = this->updateApp(downloadURL);
+    if (res)
+        return true;
+    else
+        return false;
+}
+
+bool UpdaterTab::updateApp(const std::string& url)
+{
 #ifdef _DOWNLOADER_SWITCH
-  utilities::downloadFile(url.c_str(), UPDATE_PATH_SWITCH);
-  envSetNextLoad(FORWARDER_PATH_SWITCH,
-                 ("\"" + std::string(FORWARDER_PATH_SWITCH) + "\"").c_str());
+    utilities::downloadFile(url.c_str(), UPDATE_PATH_SWITCH);
+    envSetNextLoad(FORWARDER_PATH_SWITCH,
+        ("\"" + std::string(FORWARDER_PATH_SWITCH) + "\"").c_str());
 #else
-  utilities::downloadFile(url.c_str(), UPDATE_PATH_GLFW);
+    utilities::downloadFile(url.c_str(), UPDATE_PATH_GLFW);
 // TODO: Extract and copy all the files to the project root
 #endif
 
-  return false;
+    return false;
 }
 
-bool UpdaterTab::onNoButtonPressed(brls::View *view) {
-  // TODO: Add a file to skip an update
-  this->info_label->setText("Please exit the tab now.");
+bool UpdaterTab::onNoButtonPressed(brls::View* view)
+{
+    // TODO: Add a file to skip an update
+    this->info_label->setText("Please exit the tab now.");
 
-  return true;
+    return true;
 }
