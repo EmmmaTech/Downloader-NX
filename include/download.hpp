@@ -26,6 +26,8 @@
 #include <json.hpp>
 #include <string>
 #include <unordered_map>
+#include <mutex>
+#include <condition_variable>
 
 namespace utilities
 {
@@ -50,5 +52,10 @@ std::string getLatestTag(const std::string url);
  * Gets the latest download link from an api.github.com url.
  */
 std::string getLatestDownload(const std::string url);
+
+inline std::mutex mtx;
+inline std::condition_variable meterAvaliable;
+inline bool ready = false; // Tells the main thread it's ready for it to extract the progress meter
+inline bool done  = false; // Tells the main thread it's done downloading, so it should stop the loop.
 
 } // namespace utilities

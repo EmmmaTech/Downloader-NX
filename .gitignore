@@ -3,7 +3,6 @@
 *.elf
 build/**
 build.nx/**
-config/**
 download/**
 .vscode/**
 !.vscode/c_cpp_properties.json

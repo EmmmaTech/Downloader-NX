@@ -20,6 +20,7 @@
 #include <filesystem>
 #include <home_tab.hpp>
 #include <input.hpp>
+#include <thread>
 
 HomeTab::HomeTab()
 {
@@ -70,7 +71,23 @@ bool HomeTab::onDownloadButtonPressed(brls::View* view)
         this->requestedDownloads[url] = fname;
     }
 
-    utilities::downloadFiles(this->requestedDownloads);
+    //utilities::downloadFiles(this->requestedDownloads);
+    std::thread downloadthread(&utilities::downloadFiles, std::ref(this->requestedDownloads));
+    brls::Logger::debug("Ready variable: {}, Done variable: {}", utilities::ready, utilities::done);
+
+    while (!utilities::done) // BUG: This goes into an infinite loop
+    {
+        utilities::ready = true;
+        utilities::meterAvaliable.notify_all();
+
+        while (!utilities::ready)
+            ;
+        utilities::ready = false;
+
+        this->progressLabel->setText(downloadMeter);
+    }
+
+    downloadthread.join();
 
     // Cleanup
     this->requestedDownloads.clear();

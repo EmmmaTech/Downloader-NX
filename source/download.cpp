@@ -30,8 +30,18 @@ namespace utilities
 bool processProgress(size_t TotalToDownload, size_t NowDownloaded,
     size_t TotalToUpload, size_t NowUploaded)
 {
+    std::unique_lock<std::mutex> lck { utilities::mtx };
+
+    while (!utilities::ready)
+        utilities::meterAvaliable.wait(lck);
+
+    utilities::ready = false;
+
     if (TotalToDownload <= 0)
+    {
+        utilities::ready = true;
         return true;
+    }
 
     int totaldots           = 40;
     auto fractiondownloaded = NowDownloaded / TotalToDownload;
@@ -52,12 +62,16 @@ bool processProgress(size_t TotalToDownload, size_t NowDownloaded,
     std::cout << downloadMeter;
     fflush(stdout);
 
+    utilities::ready = true;
+
     return true;
 }
 
 void downloadFile(const char* url, const char* filename)
 {
+    utilities::done = false;
     cpr::Response r = cpr::Get(cpr::Url { url }, cpr::ProgressCallback(processProgress));
+    utilities::done = true;
 
     if (r.error.code != cpr::ErrorCode::OK)
     {
