@@ -7,6 +7,7 @@
 #include <cmath>
 
 #include <progressEvent.hpp>
+#include <mainFrame.hpp>
 
 using namespace brls::i18n::literals;
 
@@ -60,7 +61,7 @@ void WorkerPage::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned hei
             if (!frame->isLastStage())
                 frame->nextStage();
             else
-                brls::Application::popView();
+                brls::Application::pushView(new MainFrame());
         }
         else
         {

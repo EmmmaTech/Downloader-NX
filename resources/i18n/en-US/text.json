@@ -1,0 +1,13 @@
+{
+    "home": {
+        "add_download": "Add a download",
+        "show_downloads": "Show all downloads",
+        "download_everything": "Download everything in the queue",
+
+        "url_hint": "Enter the url to download from:",
+        "filename_hint": "Enter the filename to download the url to:",
+
+        "download_item_base": "\"{1}\" downloading to file \"{0}\"",
+        "all_downloads_title": "All Queued Downloads"
+    }
+}
