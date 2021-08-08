@@ -72,7 +72,7 @@ int downloadProgress(void *pointer, double dltotal, double dlnow, double ultotal
 
     double fractionDownloaded = dlnow / dltotal;
     int counter = (int) (fractionDownloaded * pe.getMax());
-    ProgressEvent::getInstance().setStep(std::min(pe.getMax(), counter));
+    pe.setStep(std::min(pe.getMax(), counter));
     return 0;
 }
 

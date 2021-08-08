@@ -24,7 +24,7 @@ HomeTab::HomeTab() : brls::List()
     });
     this->addView(addNewDownload);
 
-    showAllDownloads = new brls::ListItem("text/home/show_downloads"_i18n);
+    showAllDownloads = new brls::ListItem("text/home/show_downloads"_i18n, " ");
     showAllDownloads->getClickEvent()->subscribe([this](brls::View *view) {
         brls::AppletFrame *popupFrame = new brls::AppletFrame(true, true);
         brls::List *listOfDownloads = new brls::List();
@@ -43,9 +43,6 @@ HomeTab::HomeTab() : brls::List()
         brls::PopupFrame::open("text/home/all_downloads_title"_i18n, popupFrame);
     });
     this->addView(showAllDownloads);
-
-    brls::ListItem *blankItem = new brls::ListItem("");
-    this->addView(blankItem);
 
     downloadEverything = new brls::ListItem("text/home/download_everything"_i18n);
     downloadEverything->getClickEvent()->subscribe([this](brls::View *view) {

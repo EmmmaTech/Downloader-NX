@@ -40,9 +40,10 @@ include $(DEVKITPRO)/libnx/switch_rules
 VERSION := 0.1.0
 STABLE := Nightly
 
-APP_TITLE := Downloader-NX
-APP_AUTHOR := EmreTech
+APP_TITLE   := Downloader-NX
+APP_AUTHOR  := EmreTech
 APP_VERSION := $(VERSION) $(STABLE)
+ICON        := resources/icon/Downloader_NX_Icon.jpeg
 
 TARGET		:=	Downloader-NX
 BUILD		:=	build
